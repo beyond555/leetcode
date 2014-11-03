@@ -1,0 +1,41 @@
+/*
+check the boundary,not exceed the limit
+*/
+public class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        int i,len=preorder.length;
+        TreeNode root;
+        if(len==0)
+        	return null;
+        if(len==1)
+        {
+        	root=new TreeNode(preorder[0]);
+        	return root;
+        }
+        int v=preorder[0],Len;
+        root=new TreeNode(v);
+        for(i=0;i<len;i++)
+        {
+        	if(inorder[i]==v)
+        		break;
+        }
+        Len=i;
+        int lp[]=new int[Len];
+        int li[]=new int[Len];
+        int rp[]=new int[len-Len-1];
+        int ri[]=new int[len-Len-1];
+        for(i=0;i<Len;i++)
+        {
+        	lp[i]=preorder[i+1];
+        	li[i]=inorder[i];
+        }
+        for(i=Len;i<len-1;i++)
+        {
+        	rp[i-Len]=preorder[i+1];
+        	ri[i-Len]=inorder[i+1];
+        }
+        root.left=buildTree(lp,li);
+        root.right=buildTree(rp, ri);
+        return root;
+    }
+}

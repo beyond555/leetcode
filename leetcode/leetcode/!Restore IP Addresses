@@ -1,0 +1,61 @@
+/*1.time==1 && suit(s)=false的时候要注意，suit(s)==true就加入答案 false则return,之前忘了false return 导致tle
+2.转换之后的ip不允许有前置0.即把 "010010" 弄成0.1.0.10省掉了一个0，是不行的.
+加入s.length与转化之后Integer范围的判断,len==2时,Integet必须是[10,99]不能有[1,9]
+*/
+import java.util.*;
+public class Solution {
+	List<String>ans=new ArrayList<String>();
+	public boolean suit(String s)
+	{
+		int len=s.length(),t;
+		if(len==0||len>3)
+			return false;
+		t=Integer.valueOf(s);
+		if(len==1&&t>=0&&t<=9)
+			return true;
+		if(len==2&&t>=10&&t<=99)
+			return true;
+		if(len==3&&t>=100&t<=255)
+			return true;
+		return false;
+	}
+	public void get(String s,int time,List<Integer>a)
+	{
+		int i,len=s.length();
+		List<Integer>l=new ArrayList<Integer>(a);
+		StringBuffer sb=new StringBuffer();
+		String sub="";
+		if(time==1)
+		{
+			if(suit(s))
+			{
+				l.add(Integer.valueOf(s));
+				for(i=0;i<4;i++)
+				{
+					sb.append(l.get(i)+".");
+				}
+				ans.add(sb.substring(0, sb.length()-1));
+//				System.out.println(sb.substring(0, sb.length()-1));
+			}
+			return ;
+		}
+		for(i=1;i<=Math.min(3, len);i++)
+		{
+			sub=s.substring(0,i);
+			if(suit(sub))
+			{
+				l=new ArrayList<Integer>(a);
+				l.add(Integer.valueOf(sub));
+				get(s.substring(i,len),time-1,l);
+			}
+		}
+	}
+    public List<String> restoreIpAddresses(String s) {
+        int len=s.length();
+        List<Integer>a=new ArrayList<Integer>();
+        if(len==0)
+        	return ans;
+        get(s,4,a);
+        return ans;
+    }
+}

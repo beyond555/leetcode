@@ -1,0 +1,70 @@
+import java.util.*;
+/*
+ * dfs记录路径,注意每种value可以无限次使用
+ * 判断是否相同,可以自己写循环判断 560ms,也可以hashcode判断 800ms
+ */
+public class Solution {
+	public List<List<Integer>> ans=new ArrayList<List<Integer>>();
+	public int a[];
+	public boolean check(List<Integer> t)
+	{
+		int i,j,len,len2;
+		boolean f;
+		len=ans.size();
+		List<Integer>l;
+		for(i=0;i<len;i++)
+		{
+			l=ans.get(i);
+			
+			if(l.size()!=t.size())
+				continue;
+			len2=t.size();
+			f=true;
+			for(j=0;j<len2;j++)
+			{
+				if(t.get(j)!=l.get(j))
+				{
+					f=false;
+					break;
+				}
+			}
+			if(f)
+				return f;
+		/*		
+			if(l.hashCode()==t.hashCode())
+				return true;*/
+		}
+		return false;
+	}
+	public void get(int id,int target,List<Integer> l)
+	{
+		
+		if(target==0)
+		{
+			if(!check(l))
+			{
+				ans.add(l);
+			}
+		}
+		if(id>=a.length)
+			return ;
+		if(a[id]>target)
+			return ;
+		List<Integer>t1=new ArrayList<Integer>(l);
+		t1.add(a[id]);
+		get(id+1,target-a[id],t1);
+		List<Integer>t2=new ArrayList<Integer>(l);
+		get(id+1,target,t2);
+		List<Integer>t3=new ArrayList<Integer>(l);
+		t3.add(a[id]);
+		get(id,target-a[id],t3);
+	}
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    	a=candidates;
+    	Arrays.sort(a);
+    	List<Integer> l=new ArrayList<Integer>();
+    	get(0,target,l);
+    //	System.out.println(ans);
+    	return ans;
+    }
+}

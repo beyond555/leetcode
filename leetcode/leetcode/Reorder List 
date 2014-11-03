@@ -1,0 +1,38 @@
+/*
+when the len is 0,return !
+*/
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public void reorderList(ListNode head) {
+        List <ListNode> l=new ArrayList<ListNode>();
+        ListNode t=head;
+    	while(t!=null)
+    	{
+    		l.add(t);
+    		t=t.next;
+    	}
+    	int len=l.size(),i,mid=len/2;
+    	if(len==0)
+    		return ;
+    	for(i=0;i<len;i++)
+    	{
+    		if(i==mid)
+    			l.get(i).next=null;
+    		else if(i<mid)
+    			l.get(i).next=l.get(len-1-i);
+    		else 
+    			l.get(i).next=l.get(len-i);
+    	}
+    	head=l.get(0);
+    }
+}

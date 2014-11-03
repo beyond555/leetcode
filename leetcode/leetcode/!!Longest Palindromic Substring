@@ -1,0 +1,47 @@
+/*
+manacher
+注意最后的p[i]--;因为是到了匹配不了或者越界了.
+*/
+public class Solution {
+    public String longestPalindrome(String s) {
+        StringBuffer sb=new StringBuffer("");
+        int i,len=s.length(),mx,id=0,anslen = 0,ansid=0;
+        if(len==0)
+        	return s;
+        for(i=0;i<len;i++)
+        {
+        	sb.append("#");
+        	sb.append(s.charAt(i));
+        }
+        sb.append("#");
+        String t=sb.toString();
+        len=t.length();
+        int p[]=new int[len];
+        mx=0;
+        id=0;
+     //   System.out.println(t);
+        for(i=1;i<len;i++)
+        {
+        	if(mx>i)        	
+        		p[i]=Math.min(p[id*2-i],mx-i);        	
+        	else
+        		p[i]=0;
+        	while(i+p[i]<len&&i-p[i]>=0&&t.charAt(i+p[i])==t.charAt(i-p[i]))
+        		p[i]++;
+       		p[i]--;
+        	if(p[i]+i>mx)
+        	{
+        		id=i;
+        		mx=i+p[i];
+        	}
+        	if(p[i]>anslen)
+        	{
+        		anslen=p[i];
+        		ansid=i;
+        	}
+  //      	System.out.println(i+" "+p[i]+" "+mx);
+        }
+        String ans=t.substring(ansid-p[ansid],ansid+p[ansid]+1);
+        return ans.replace("#", "");
+    }
+}

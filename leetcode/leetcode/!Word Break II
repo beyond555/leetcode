@@ -1,0 +1,114 @@
+import java.util.*;
+/*
+ * Word Break II 
+ * 根据 word break 1 改
+ * 每次记录特定字符串对应的List避免重复计算
+ * 注意if(s.equals(v))时候每次是加入一个新的sb
+ */
+public class Solution {
+	public Map<String,List<String>>m=new HashMap<String,List<String>>();
+	public Set<String> dict;
+    public List<String> get(String s) {
+    	int len=s.length(),i;
+    	StringBuffer sb;
+    	List<String>l=new ArrayList<String>();
+    	List<String>sub;
+    	if(len==0)
+    		return l;
+        Iterator<String> it=dict.iterator();
+        String v,t;
+        while(it.hasNext())
+        {
+        	v=it.next();
+        	if(s.equals(v))
+    		{
+        		sb=new StringBuffer("");
+        		sb.append(" "+v);
+        		l.add(sb.toString());
+    		}
+        	else if(s.startsWith(v))
+        	{
+        		t=s.substring(v.length(),len);
+        		if(!m.containsKey(t))
+        		{
+        			sub=get(t);
+        			m.put(t, sub);
+        	//		System.out.println(sub);
+        		}
+        		sub=m.get(t);
+        		for(i=0;i<sub.size();i++)
+        		{
+        			sb=new StringBuffer(" "+v).append(sub.get(i));
+        			l.add(sb.toString());
+        		}
+        	}
+        }
+        return l;
+    }
+    public List<String> wordBreak(String s, Set<String> dict) 
+    {
+    	this.dict=dict;
+    	List<String>l=get(s);
+    	List<String>ans=new ArrayList<String>();
+    	for(int i=0;i<l.size();i++)
+    		ans.add(l.get(i).trim());
+    	return ans;
+    }
+    
+}
+
+
+
+import java.util.*;
+public class Solution {
+    List<List<String>>ans=new ArrayList<List<String>>();
+//  Map<Integer,List<List<String>>>m=new HashMap<Integer,List<List<String>>>();
+    String s;
+    boolean dp[][];
+    public void get(int id,List<String>now)
+    {
+        int i,j,len=s.length();
+        
+        if(id==len)
+        {
+            ans.add(now);
+        }
+        List<String>All;
+        String sub;
+        for(i=id;i<len;i++)
+        {
+            if(dp[id][i])
+            {
+            //  System.out.println("asd "+id +" "+i );
+                All=new ArrayList<String>(now);
+                sub=s.substring(id,i+1);
+                All.add(sub);
+                get(i+1,All);
+            }
+        }
+        return ;
+    }
+    public List<List<String>> partition(String s) {
+        this.s=s;
+        int i,j,len=s.length();     
+        if(len==0)
+            return ans;
+        dp=new boolean[len][len];
+        for(i=len-1;i>=0;i--)
+        {
+            for(j=len-1;j>=i;j--)
+            {
+                if(i==j)
+                    dp[i][j]=true;
+                else if(j==i+1)
+                    dp[i][j]=(s.charAt(i)==s.charAt(j));
+                else
+                    dp[i][j]=(s.charAt(i)==s.charAt(j))&&dp[i+1][j-1];
+            }
+        }
+
+        get(0,new ArrayList<String>());
+    //  System.out.println(ans);
+        return ans;
+    }
+}

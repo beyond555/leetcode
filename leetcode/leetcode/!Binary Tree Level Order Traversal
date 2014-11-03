@@ -1,0 +1,40 @@
+//copy an arraylist :t1=new ArrayList<TreeNode>(t2);
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<List<Integer>>();
+        List<Integer> a1=new ArrayList<Integer>();
+        List<TreeNode> t1=new ArrayList<TreeNode>();
+        List<TreeNode> t2=new ArrayList<TreeNode>();
+        TreeNode t;
+        if(root==null)
+            return ans;
+        int i;
+        t1.add(root);
+        while(t1.size()>0)
+        {
+            for(i=0;i<t1.size();i++)
+            {
+                t=t1.get(i);
+                a1.add(t.val);
+                if(t.left!=null)
+                    t2.add(t.left);
+                if(t.right!=null)
+                    t2.add(t.right);
+            }
+            ans.add(a1);
+            a1=new ArrayList<Integer>();
+            t1=new ArrayList<TreeNode>(t2);
+            t2.clear();
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,66 @@
+
+/*
+ * dfs
+ */
+public class Solution {
+	int n,m;
+	boolean vis[][];
+	String word;
+	int px[]={1,-1,0,0};
+	int py[]={0,0,1,-1};
+	public boolean suit(int x,int y)
+	{
+		if(x>=0&&x<n&&y>=0&&y<m&&!vis[x][y])
+			return true;
+		return false;
+	}
+	public boolean dfs(char a[][],int X,int Y,int step)
+	{
+		int i,x,y;
+		if(a[X][Y]!=word.charAt(step))
+			return false;
+		if(step==word.length()-1)
+			return true;
+		vis[X][Y]=true;
+		for(i=0;i<4;i++)
+		{
+			x=X+px[i];
+			y=Y+py[i];
+			if(suit(x,y))
+			{
+				if(dfs(a,x,y,step+1))
+				{
+	//				System.out.println(x+" "+y+" "+step+" "+word.charAt(step+1));
+					return true;
+				}
+			}
+		}
+		vis[X][Y]=false;
+		return false;
+	}
+    public boolean exist(char[][] a, String word) {
+        n=a.length;
+        if(n==0)
+        	return false;
+        m=a[0].length;
+        this.word=word;
+        if(m==0)
+        	return false;
+        int i,j;
+        boolean f;
+        for(i=0;i<n;i++)
+        {
+        	for(j=0;j<m;j++)
+        	{
+        		if(a[i][j]==word.charAt(0))
+        		{
+        			vis=new boolean[n][m];
+        			f=dfs(a,i,j,0);
+        			if(f)
+        				return true;
+        		}
+        	}
+        }
+        return false;
+    }
+}

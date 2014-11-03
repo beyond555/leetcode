@@ -1,0 +1,21 @@
+public class Solution {
+    public int maxProfit(int[] prices) {
+        int i,len=prices.length,ans=0,b,e;
+        i=0;
+        while(i<len)
+        {
+        	while(i+1<len&&prices[i]>=prices[i+1])
+        		i++;
+        	if(i>=len-1)
+        		break;
+        	b=prices[i];
+        	while(i+1<len&&prices[i]<=prices[i+1])
+        		i++;
+        	if(i>=len-1)
+        		i=len-1;
+        	e=prices[i];
+        	ans+=e-b;
+        }
+        return ans;
+    }
+}

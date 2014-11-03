@@ -1,0 +1,38 @@
+/*
+ * 注意一定要把左边节点设置成null pre.left=null;
+ * 程序是要看整个树的结果而不是比较一直向右遍历的val
+ */
+import java.util.*;
+public class Solution {
+    public List<TreeNode>ans;
+    public void toArray(TreeNode root)
+    {
+        ans.add(root);
+        if(root.left!=null)
+            toArray(root.left);
+        if(root.right!=null)
+            toArray(root.right);
+    }
+    public void flatten(TreeNode root) {
+        ans=new ArrayList<TreeNode>();
+        if(root==null)
+            return ;
+        toArray(root);
+        int i,len=ans.size();
+        if(len==0)
+            return ;
+        TreeNode pre,now,newhead;
+        pre=ans.get(0);
+        pre.left=null;
+        newhead=pre;
+       
+        for(i=0;i<len-1;i++)
+        {
+            now=ans.get(i+1);
+            pre.left=null;
+            pre.right=now;
+            pre=now;
+        }
+        root=newhead;
+    }
+}

@@ -1,0 +1,52 @@
+import java.util.*;
+/*
+ * 暴力,枚举起点往后搜就可以了,因为L[]里面长度都一样,所以不用考虑前缀的问题
+ */
+public class Solution {
+    public List<Integer> findSubstring(String S, String[] L) {
+        int i,j,size=L.length,len=L[0].length();
+        List<Integer>ans=new ArrayList<Integer>();
+        Map<String,Integer>vis=new HashMap<String,Integer>();
+        Map<String,Integer>rec;
+        String t;
+        for(i=0;i<size;i++)
+        {
+        	if(!vis.containsKey(L[i]))
+        	{
+        		vis.put(L[i], 1);
+        	}
+        	else
+        	{
+        		vis.put(L[i], vis.get(L[i])+1);
+        	}
+        }
+        for(i=0;i<=S.length()-size*len;i++)
+        {
+        	rec=new HashMap<String,Integer>(vis);
+        	j=i;
+       // 	System.out.println(i+" start");
+        	while(rec.size()>0)
+        	{
+        		t=S.substring(j,j+len);
+        	//	System.out.println(rec);
+        		if(rec.containsKey(t)&&rec.get(t)>0)
+        		{
+        	//		System.out.println("contain "+t);
+        			rec.put(t, rec.get(t)-1);
+        			if(rec.get(t)==0)
+        				rec.remove(t);
+        			j+=len;
+        		}
+        		else
+        			break;
+        	}
+        	if(rec.size()==0)
+        	{
+        		ans.add(i);
+        	}
+        }
+    /*    for(i=0;i<ans.size();i++)
+        	System.out.println(ans.get(i));*/
+        return ans;
+    }
+}

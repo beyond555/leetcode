@@ -1,0 +1,21 @@
+//!n may be less than 0
+public class Solution {
+    public double pow(double x, int n) {
+        if(n<0)
+        {
+            x=1/x;
+            n=0-n;
+        }
+        int i;
+        double t;
+        if(n==0)
+            return 1;
+        if(n==1)
+            return x;
+        t=pow(x,n/2);
+        t*=t;
+        if(n%2==1)
+            t*=x;
+        return t;
+    }
+}

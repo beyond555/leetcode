@@ -1,0 +1,43 @@
+/*
+ * 1.递归的思想和dp的思想,每次记录到*号match的(i,j),那么i,j前面的全部当做匹配完成了,不用再管了
+ * (其实换一种思路,*号作用是无限的,每次遇到了问题,可以用当前最后一个*号去解决,而不用麻烦前面的*号)
+ * 到了后面不匹配的时候,每次把之前*处匹配的字符多加一个
+ * 2.注意边界条件,越界,很容易越界
+ */
+public class Solution {
+	public int starID=-1;
+	public int match=-1;
+    public boolean isMatch(String s, String p) {
+        int i,len1=s.length(),j,len2=p.length();
+        i=j=0;
+        while(i<len1)
+        {
+      //  	System.out.println(s.substring(i)+" "+p.substring(j));
+    		if(j<len2&&(p.charAt(j)=='?'||p.charAt(j)==s.charAt(i)))
+    		{
+    			i++;
+    			j++;
+    		}
+    		else if(j<len2&&p.charAt(j)=='*')
+    		{
+    			starID=j;
+    			match=i;
+    			j++;
+    		}
+    		else
+    		{
+    			if(starID!=-1)
+    			{
+    				j=starID+1;//*和匹配到上次的match+1
+    				match++;
+    				i=match;
+    			}
+    			else
+    				return false;
+    		}
+        };
+        while(j<len2&&p.charAt(j)=='*')
+        	j++;
+        return j==len2;
+    }
+}

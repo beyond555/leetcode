@@ -1,0 +1,34 @@
+/*
+compare the content of String
+use .equals not ==
+*/
+import java.util.Stack;
+public class Solution {
+    public int evalRPN(String[] tokens) {
+        int i,len=tokens.length;
+        Stack<Integer>s=new Stack<Integer>();
+        String t;
+        int a,b;
+        for(i=0;i<len;i++)
+        {
+        	t=tokens[i];
+        	if(t.equals("*")||t.equals("/")||t.equals("+")||t.equals("-"))
+        	{
+        		a=s.pop();
+        		b=s.pop();
+        		if(t.equals("*"))
+        			b*=a;
+        		else if(t.equals("/"))
+        			b/=a;
+        		else if(t.equals("+"))
+        			b+=a;
+        		else 
+        			b-=a;
+        		s.push(b);
+        	}
+        	else
+        		s.push(Integer.valueOf(t));
+        }
+        return s.pop();
+    }
+}

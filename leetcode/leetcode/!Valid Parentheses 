@@ -1,0 +1,50 @@
+/*
+1.use stack
+2.check q.size() when pop
+*/
+import java.util.*;
+public class Solution {
+    public boolean isValid(String s) {
+        Stack<Character>q=new Stack<Character>();
+        char c,a;
+        boolean f=true;
+        int i,len=s.length();
+        if(len==0)
+        	return f;
+        for(i=0;i<len;i++)
+        {
+        	c=s.charAt(i);
+        	if(c=='('||c=='['||c=='{')
+        	{
+        		q.add(c);
+        	}
+        	else
+        	{
+        		if(q.size()==0)
+        			return false;
+        		if(c==')')
+        		{
+        			a=q.pop();
+        			if(a!='(')
+        				return false;
+        		}
+        		if(c==']')
+        		{
+        			a=q.pop();
+        			if(a!='[')
+        				return false;
+        		}
+        		if(c=='}')
+        		{
+        			a=q.pop();
+        			if(a!='{')
+        				return false;
+        		}
+        	}
+        }
+        if(q.size()>0)
+        	return false;
+        return f;
+    }
+}
+

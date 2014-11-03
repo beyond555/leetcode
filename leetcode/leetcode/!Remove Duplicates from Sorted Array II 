@@ -1,0 +1,28 @@
+/*
+return the length and do not forget to change the array
+之前题目没说清楚　还要改变Ａ数组
+*/
+public class Solution {
+    public int removeDuplicates(int[] A) {
+        int i=0,j,pre=-1,len=A.length,sum=0,cnt,id=0;
+        while(i<len)
+        {
+            pre=A[i];
+            j=i;
+            cnt=0;
+            while(j<len&&A[j]==pre)
+                j++;
+            j--;
+            cnt=j-i+1;
+            if(cnt>2)
+                cnt=2;
+            i=j+1;
+            sum+=cnt;
+            for(j=0;j<cnt;j++)
+            {
+                A[id++]=pre;
+            }
+        }
+        return sum;
+    }
+}

@@ -1,0 +1,46 @@
+/*
+ * 从右往左找到第一个a[i],满足a[i]<a[j],(j>i) 如2,3,5,4 找到a[i]=3
+ * 从i+1到len找到比a[i]大的，最小的数 ,找到4
+ * 这两个数交换位置,成2,4,5,3
+ * 对于i+1到len的数字排序 成 2,4,3,5
+ */
+import java.util.Arrays;
+public class Solution {
+    public int findId(int []a)
+    {
+        int i,j,len=a.length;
+        for(i=len-1;i>=0;i--)
+        {
+            for(j=i+1;j<len;j++)
+            {
+              if(a[i]<a[j])
+                return i;
+            }
+        }
+        return -1;
+    }
+    public void nextPermutation(int[] num) {
+        int i,len=num.length,id=findId(num),min=Integer.MAX_VALUE,exchangeId = 0;
+        if(id==-1)
+        {
+        	Arrays.sort(num);
+        	return ;
+        }
+        for(i=id+1;i<len;i++)
+        {
+            if(num[id]<num[i]&&num[i]<min)
+            {
+                min=num[i];
+                exchangeId=i;
+            }
+        }
+        num[exchangeId]=num[id];
+        num[id]=min;
+        int temp[]=new int[len-id-1];
+        for(i=id+1;i<len;i++)
+            temp[i-id-1]=num[i];
+        Arrays.sort(temp);
+        for(i=id+1;i<len;i++)
+            num[i]=temp[i-id-1];
+    }
+}

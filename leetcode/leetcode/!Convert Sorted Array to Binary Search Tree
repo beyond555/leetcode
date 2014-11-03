@@ -1,0 +1,34 @@
+/*each time pick the middle one
+then build(l,mid-1,num) & build(mid+1,r,num)
+take care of the condition when l>r
+*/
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode build(int l,int r,int[] num)
+    {
+        if(l>r)
+            return null;
+        int mid=(l+r)/2;
+        TreeNode now=new TreeNode(num[mid]);
+        TreeNode left=null,right=null;
+        if(l!=r)
+        {
+            now.left=build(l,mid-1,num);
+            now.right=build(mid+1,r,num);
+        }
+        return now;
+    }
+    public TreeNode sortedArrayToBST(int[] num) {
+        if(num.length==0)
+            return null;
+        return build(0,num.length-1,num);
+    }
+}

@@ -1,0 +1,33 @@
+/*
+ * 1.中序遍历,从遍历的数组里面找到两组相邻的两个,前者>后者的
+ * 如1 2 5 4 3,第一组5 4,第二组4 3,第一组的前者和第二组的后者就是要找的答案
+ * 通过dfs,记录pre节点,first是第一组,last是第二组,交换val即可
+ * 
+ */
+public class Solution {
+	TreeNode first,last,pre;
+	public void dfs(TreeNode root)
+	{
+		if(root==null)
+			return ;
+		dfs(root.left);
+		if(pre!=null&&first==null&&pre.val>root.val)
+		{
+			first=pre;
+		}
+		if(pre!=null&&pre.val>root.val)
+		{
+			last=root;
+		}
+		pre=root;
+		dfs(root.right);
+		
+	}
+    public void recoverTree(TreeNode root) {
+        dfs(root);
+        int t=first.val;
+        first.val=last.val;
+        last.val=t;
+        return ;
+    }
+}

@@ -1,0 +1,46 @@
+import java.util.*;
+/*
+ * 1.就是记录重叠部分的begin,end.然后把这个区间插入到合适的index中
+ * 注意这个区间一点要add回去...之前一直忘了
+ */
+public class Solution {
+	public boolean overlap(Interval a,Interval b)
+	{
+		if(a.start>b.end)
+			return false;
+		if(a.end<b.start)
+			return false;
+		return true;
+	}
+    public List<Interval> insert(List<Interval> a, Interval newInterval) {
+        int i,len=a.size(),begin,end,id=0;
+        List<Interval>ok=new ArrayList<Interval>();
+        begin=newInterval.start;
+        end=newInterval.end;
+        Interval t;
+        for(i=0;i<a.size();i++)
+        {
+        	t=a.get(i);
+        	if(overlap(t,newInterval))
+        	{
+        		begin=Math.min(begin,t.start);
+        		end=Math.max(end, t.end);
+        	}
+        	else
+        	{
+        		ok.add(t);
+        	}
+        }
+    	len=ok.size();
+    	for(i=0;i<len;i++)
+    	{
+    		if(ok.get(i).start>begin)
+    		{
+    			ok.add(i,new Interval(begin, end));
+    			return ok;
+    		}
+    	}
+        ok.add(new Interval(begin, end));
+        return ok;
+    }
+}

@@ -1,0 +1,68 @@
+import java.util.*;
+/*
+ * 照着N-Queens II 改就行了
+ */
+public class Solution {
+	int n;
+	int ans=0;
+	int row[];
+	StringBuffer org=new StringBuffer("");
+	List<String[]>res=new ArrayList<String[]>();
+	public void dfs(int line,int step)
+	{
+		int i,j;
+
+	//	System.out.println(line+" "+step);
+		if(step==n)
+		{
+			String tmp[]=new String[n];
+			StringBuffer sb;
+			for(i=0;i<step;i++)
+			{
+				sb=new StringBuffer(org);
+				sb.replace(row[i], row[i]+1, "Q");
+				tmp[i]=String.valueOf(sb);
+			}
+			res.add(tmp);
+			/*
+			for(i=0;i<step;i++)
+				System.out.println(tmp[i]);
+			System.out.println();
+			*/
+			ans++;
+			return ;
+		}
+		boolean f;
+		for(i=0;i<n;i++)
+		{
+			f=true;
+			for(j=0;j<step;j++)
+			{
+				if(row[j]==i||(Math.abs(line-j)==Math.abs(i-row[j])))
+				{
+					f=false;
+					break;
+				}
+			}
+			if(f)
+			{
+				row[step]=i;
+				dfs(line+1,step+1);
+			}
+		}
+	}
+	public List<String[]> solveNQueens(int n) {
+    	this.n=n;
+    	int i;
+        row=new int[n];
+        
+		for(i=0;i<n;i++)
+			org.append(".");
+        for(i=0;i<n;i++)
+        {
+        	row[0]=i;
+        	dfs(1,1);
+        }
+        return res;
+    }
+}

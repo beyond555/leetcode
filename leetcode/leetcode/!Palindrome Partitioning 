@@ -1,0 +1,137 @@
+/*
+思路dp记录ij是否回文,然后dfs即可.写了两种方法,
+第一种方法模仿前面word break,每次把特定位置处理过的记下来,下次直接加,结果500ms,这里要注意tmp=new ArrayList<String>(next.get(j));
+每次取出来的时候不能直接add,会导致原来List上的该元素直接改变,
+第二种方法就包含了重复运算,结果400ms+...
+*/
+import java.util.*;
+public class Solution {
+	Map<Integer,List<List<String>>>m=new HashMap<Integer,List<List<String>>>();
+	String s;
+	boolean dp[][];
+	public void get(int id,List<String>now)
+	{
+		int i,j,len=s.length();
+		List<String>left = new ArrayList<String>(),tmp;
+		List<List<String>>Left=new ArrayList<List<String>>(),next=null;
+		if(id==len)
+		{
+			Left.add(left);
+			m.put(id, Left);
+		}
+		List<String>All;
+		String sub;
+		for(i=id;i<len;i++)
+		{
+			if(dp[id][i])
+			{
+				All=new ArrayList<String>(now);
+				sub=new String(s.substring(id,i+1));
+				All.add(sub);
+				if(!m.containsKey(i+1))
+					get(i+1,All);
+				next=new ArrayList<List<String>>();
+				next=m.get(i+1);
+		//		System.out.println("get "+(i+1));
+		//		System.out.println(next);
+				for(j=0;j<next.size();j++)
+				{
+					tmp=new ArrayList<String>(next.get(j));
+					////!!!!!!!!!!!!!!
+					tmp.add(0, sub);
+					Left.add(tmp);
+				}
+				
+			}
+	//		debug();
+		}
+	//	System.out.println("put "+id+" "+Left);
+		m.put(id, Left);
+		return ;
+	}
+    public List<List<String>> partition(String s) {
+    	this.s=s;
+    	int i,j,len=s.length();    	
+    	if(len==0)
+    		return new ArrayList<List<String>>();
+    	dp=new boolean[len][len];
+    	for(i=len-1;i>=0;i--)
+    	{
+    		for(j=len-1;j>=i;j--)
+    		{
+    			if(i==j)
+    				dp[i][j]=true;
+    			else if(j==i+1)
+    				dp[i][j]=(s.charAt(i)==s.charAt(j));
+    			else
+    				dp[i][j]=(s.charAt(i)==s.charAt(j))&&dp[i+1][j-1];
+    		}
+    	}
+    	get(0,new ArrayList<String>());
+   // 	System.out.println(m.get(0));
+    	return m.get(0);
+    }
+    public void debug()
+    {
+    	int i;
+    	for(i=0;i<s.length();i++)
+    		if(m.containsKey(i))
+    			System.out.println(i+" debug \n"+m.get(i));
+    }
+}
+
+
+
+import java.util.*;
+public class Solution {
+	List<List<String>>ans=new ArrayList<List<String>>();
+//	Map<Integer,List<List<String>>>m=new HashMap<Integer,List<List<String>>>();
+	String s;
+	boolean dp[][];
+	public void get(int id,List<String>now)
+	{
+		int i,j,len=s.length();
+		
+		if(id==len)
+		{
+			ans.add(now);
+		}
+		List<String>All;
+		String sub;
+		for(i=id;i<len;i++)
+		{
+			if(dp[id][i])
+			{
+			//	System.out.println("asd "+id +" "+i );
+				All=new ArrayList<String>(now);
+				sub=s.substring(id,i+1);
+				All.add(sub);
+				get(i+1,All);
+			}
+		}
+		return ;
+	}
+    public List<List<String>> partition(String s) {
+    	this.s=s;
+    	int i,j,len=s.length();    	
+    	if(len==0)
+    		return ans;
+    	dp=new boolean[len][len];
+    	for(i=len-1;i>=0;i--)
+    	{
+    		for(j=len-1;j>=i;j--)
+    		{
+    			if(i==j)
+    				dp[i][j]=true;
+    			else if(j==i+1)
+    				dp[i][j]=(s.charAt(i)==s.charAt(j));
+    			else
+    				dp[i][j]=(s.charAt(i)==s.charAt(j))&&dp[i+1][j-1];
+    		}
+    	}
+
+    	get(0,new ArrayList<String>());
+    //	System.out.println(ans);
+    	return ans;
+    }
+}

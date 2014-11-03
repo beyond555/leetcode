@@ -1,0 +1,47 @@
+public class Solution {
+	final int len=9;
+    public boolean isValidSudoku(char[][] a) {
+        int i,j,id;
+        boolean vis[];
+        for(i=0;i<len;i++)
+        {
+        	vis=new boolean[len];
+        	for(j=0;j<len;j++)
+        	{
+        		if(a[i][j]=='.')
+        			continue;
+        		if(vis[a[i][j]-'1'])
+        			return false;
+        		vis[a[i][j]-'1']=true;
+        	}
+    	}
+        for(i=0;i<len;i++)
+        {
+        	vis=new boolean[len];
+        	for(j=0;j<len;j++)
+        	{
+        		if(a[j][i]=='.')
+        			continue;
+        		if(vis[a[j][i]-'1'])
+        			return false;
+        		vis[a[j][i]-'1']=true;
+        	}
+    	}
+        for(id=0;id<len;id++)
+        {
+        	vis=new boolean[len];
+        	for(i=id/3*3;i<id/3*3+3;i++)
+        	{
+        		for(j=(id%3)*3;j<(id%3)*3+3;j++)
+        		{
+        			if(a[i][j]=='.')
+            			continue;
+            		if(vis[a[i][j]-'1'])
+            			return false;
+            		vis[a[i][j]-'1']=true;
+        		}
+        	}
+        }
+        return true;
+    }
+}

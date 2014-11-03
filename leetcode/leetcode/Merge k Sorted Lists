@@ -1,0 +1,33 @@
+import java.util.*;
+/*
+ * 无节操的存入一个数组再快排
+ */
+public class Solution {
+    public ListNode mergeKLists(List<ListNode> a) {
+        List<Integer>ans=new ArrayList<Integer>();
+        ListNode t=new ListNode(-1);
+        ListNode pre=t,head;
+        int i;
+        for(i=0;i<a.size();i++)
+        {
+        	head=a.get(i);
+        	while(head!=null)
+        	{
+        		ans.add(head.val);
+        		head=head.next;
+        	}
+        }
+        int len=ans.size();
+        int s[]=new int[len];
+        for(i=0;i<len;i++)
+        	s[i]=ans.get(i);
+        Arrays.sort(s);
+        for(i=0;i<len;i++)
+        {
+        	pre.next=new ListNode(s[i]);
+        //	System.out.println(s[i]);
+        	pre=pre.next;
+        }
+        return t.next;
+    }
+}

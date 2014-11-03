@@ -1,0 +1,36 @@
+import java.util.Arrays;
+/*
+ * 题目没有说怎么分成两个子树,并不是一半一半,自己枚举即可
+ */
+public class Solution {
+    public boolean isScramble(String a, String b) {
+        if(a.length()!=b.length())
+        	return false;
+        int len=a.length(),mid;
+        if(len==1)
+        	return a.equals(b);
+        if(a.equals(b))
+        	return true;
+        char ac[]=a.toCharArray();
+        Arrays.sort(ac);
+        char bc[]=b.toCharArray();
+        Arrays.sort(bc);
+        if(!String.valueOf(ac).equals(String.valueOf(bc)))
+        	return false;
+        String al,ar,bl,br;
+        for(mid=1;mid<len;mid++)
+        {
+	        al=a.substring(0,mid);
+	        ar=a.substring(mid);
+	        bl=b.substring(0,mid);
+	        br=b.substring(mid);
+	        if(isScramble(al,bl)&&isScramble(ar,br))
+	        	return true;
+	        bl=b.substring(0,len-mid);
+	        br=b.substring(len-mid);
+	        if(isScramble(al,br)&&isScramble(ar,bl))
+	        	return true;
+        }
+        return false;
+    }
+}

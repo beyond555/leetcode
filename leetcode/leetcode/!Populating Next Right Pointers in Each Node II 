@@ -1,0 +1,57 @@
+/**
+ * This time use BFS not DFS because when DFS, the inter-structure of right son has no next pointer ,all null.
+ * use BFS to immate the level order.
+ * /
+/*
+ * Definition for binary tree with next pointer.
+ * public class TreeLinkNode {
+ *     int val;
+ *     TreeLinkNode left, right, next;
+ *     TreeLinkNode(int x) { val = x; }
+ * }
+ */
+import java.util.*;
+public class Solution {
+     public void connect(TreeLinkNode root) {
+        TreeLinkNode a,b,t,now;
+        if(root==null)
+            return ;
+        Queue<TreeLinkNode>q=new LinkedList<TreeLinkNode>();
+        q.add(root);
+        while(q.size()>0)
+        {
+            now=q.poll();
+            a=b=null;
+            if(now.left!=null&&now.right!=null)
+                now.left.next=now.right;
+            if(now.next!=null)
+            {
+                if(now.right!=null)
+                    a=now.right;
+                else if(now.left!=null)
+                    a=now.left;
+                if(a!=null)
+                {
+                    t=now.next;
+                    while(t!=null&&t.left==null&&t.right==null)
+                    {
+                        t=t.next;
+                    }
+                    if(t!=null)
+                    {
+                        if(t.left!=null)
+                            b=t.left;
+                        else if(t.right!=null)
+                            b=t.right;
+                    }
+                    if(b!=null)
+                        a.next=b;
+                }
+            }
+            if(now.left!=null)
+                q.add(now.left);
+            if(now.right!=null)
+                q.add(now.right);
+        }
+     }
+}

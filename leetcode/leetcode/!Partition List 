@@ -1,0 +1,62 @@
+/*
+not to form a cycle so point pre2 to null
+pay attention when all elements are large then x ,then the pre1 may be null
+
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode a=head,less,more,pre1,pre2;
+        less=more=pre1=pre2=null;
+        if(head==null)
+            return head;
+        while(a!=null)
+        {
+            if(a.val<x)
+            {
+                if(less==null)
+                {
+                    less=a;
+                    pre1=a;
+                }
+                else
+                {
+                    pre1.next=a;
+                    pre1=a;
+                }
+            }
+            else
+            {
+                if(more==null)
+                {
+                    more=a;
+                    pre2=a;
+                }
+                else
+                {
+                    pre2.next=a;
+                    pre2=a;
+                }
+            }
+            a=a.next;
+        }
+        if(pre2!=null)//!!!
+            pre2.next=null;
+        if(pre1!=null)//!!!
+        {
+            pre1.next=more;
+            return less;
+        }
+        return more;
+    }
+}

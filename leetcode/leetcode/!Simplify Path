@@ -1,0 +1,39 @@
+import java.util.Stack;
+/*
+ * 注意split("/+")这种一次可以以多个连续的符号来分开的写法
+ */
+public class Solution {
+    public String simplifyPath(String path) {
+        String s[]=path.split("/+");
+        int i,len=s.length;
+        Stack<String>t=new Stack<String>();
+        for(i=0;i<len;i++)
+        {
+            if(s[i].length()>0)
+            {
+                if(s[i].equals(".."))
+                {
+                    if(t.size()==0)
+                        continue;
+                    t.pop();
+                }
+                else if(s[i].equals("."))
+                {
+                    continue;
+                }
+                else
+                {
+                    t.push(s[i]);
+                }
+            }
+        }
+        String ans="";
+        while(t.size()>0)
+        {
+            ans="/"+t.pop()+ans;
+        }
+        if(ans.length()==0)
+            ans="/";
+        return ans;
+    }
+}

@@ -1,0 +1,9 @@
+public class Solution {
+    public boolean search(int[] A, int target) {
+        int i,len=A.length;
+        for(i=0;i<len;i++)
+            if(A[i]==target)
+                return true;
+        return false;
+    }
+}

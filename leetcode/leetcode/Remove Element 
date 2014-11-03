@@ -1,0 +1,15 @@
+public class Solution {
+    public int removeElement(int[] A, int elem) {
+        int i,id=0,len=A.length;
+        int B[]=new int[len];
+        for(i=0;i<len;i++)
+        {
+            if(A[i]==elem)
+                continue;
+            B[id++]=A[i];
+        }
+        for(i=0;i<id;i++)
+            A[i]=B[i];
+        return id;
+    }
+}

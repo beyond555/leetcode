@@ -1,0 +1,36 @@
+/*
+ * 巧妙,每次只考虑单个i位置,他左边最高的位置和右边最高的位置,
+ * 那么这个位置可以灌水Math.min(l[i], r[i])-a[i];
+ * 之前错误的当成了左边第一个比他大的和右边第一个比他大的,而应该是左边最大,右边最大
+ * 第二个错误是之前是成片的考虑的,取一个最低点向两边展开到最高点,代码难写而且bug多
+ */
+public class Solution {
+    public int trap(int[] a) {
+    	int i,j,len=a.length,ans=0;
+        int l[]=new int[len];
+        int r[]=new int[len];
+        if(len==0)
+        	return 0;
+        l[0]=a[0];
+        for(i=1;i<len;i++)
+        {
+        	l[i]=Math.max(a[i], l[i-1]);
+        }
+        r[len-1]=a[len-1];
+        for(i=len-2;i>=0;i--)
+        {
+        	r[i]=Math.max(a[i], r[i+1]);
+        }
+   /*
+        for(i=0;i<len;i++)
+        {
+        	System.out.println(a[i]+" "+l[i]+" "+r[i]);
+        }
+     */   
+        for(i=0;i<len;i++)
+        {
+        	ans+=Math.min(l[i], r[i])-a[i];
+        }
+        return ans;
+    }
+}

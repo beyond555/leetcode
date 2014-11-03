@@ -1,0 +1,75 @@
+/*
+as A-Z,a-z may appear, the cnt[] may be size of 58
+if we keep sum of each node for S, it is TLE
+so use map to keep track of the useful number of array T
+Then time complexity is O(M+N) as the sum the the length of S and T
+*/
+import java.util.HashMap;
+
+public class Solution {
+	public class node
+	{
+		int cnt[]=new int[58];
+		node()
+		{}
+	}
+	node a[];
+	HashMap<Character,Integer>m;
+	int mapsize;
+	public boolean suit(int b,int e,node target)
+	{
+		
+		int i;
+		for(i=1;i<=mapsize;i++)
+		{
+			if(a[e].cnt[i]-a[b-1].cnt[i]<target.cnt[i])
+				return false;
+		}
+		return true;
+	}
+    public String minWindow(String S, String T) {
+        int i,j,len=S.length();
+        a=new node[S.length()+1];
+        node target=new node();
+        m=new HashMap<Character, Integer>();
+        int id=1,v;
+        for(i=0;i<T.length();i++)
+        {
+        	if(m.get(T.charAt(i))==null)
+        	{
+        		m.put(T.charAt(i), id++);
+        	}
+        	v=m.get(T.charAt(i));
+        	target.cnt[v]++;
+        }
+        mapsize=m.size();
+        a[0]=new node();
+        for(i=1;i<=len;i++)
+        {
+        	a[i]=new node();
+        	for(j=1;j<=mapsize;j++)
+        		a[i].cnt[j]=a[i-1].cnt[j];
+        	if(m.get(S.charAt(i-1))!=null)
+        		a[i].cnt[m.get(S.charAt(i-1))]++;
+    	}
+        j=1;
+        String ans=null;
+        for(i=1;i<=len;i++)
+        {
+        	for(;j<=len;j++)
+        	{
+        		boolean f=suit(i,j,target);
+        		if(f)
+        		{
+        			
+        			if(ans==null||j-i+1<ans.length())
+        				ans=S.substring(i-1,j);
+        			break;
+        		}
+        	}
+        }
+        if(ans==null)
+        	return "";
+        return ans;
+    }
+}

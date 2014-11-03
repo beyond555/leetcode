@@ -1,0 +1,28 @@
+/*
+ * 一个l,一个r解决
+ * 注意情况是只有一个地点那么 l==r时要加入判断 sum>=0,这样才能return l
+ */
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int len=gas.length,sum=0;
+        int l,r;
+        l=0;
+        r=0;
+    	sum=0;
+        while(l<len)
+        {
+        	while(sum>=0)
+        	{
+        		sum+=gas[r]-cost[r];
+        		r=(r+1)%len;
+        		if(r==l)
+        			break;
+        	}
+        	if(l==r&&sum>=0)
+        		return l;
+        	sum-=gas[l]-cost[l];
+        	l++;
+        }
+        return -1;
+    }
+}

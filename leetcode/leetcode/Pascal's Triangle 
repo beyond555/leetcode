@@ -1,0 +1,24 @@
+//iterate i from 0 not 1,as List.get start from 0
+public class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>>ans=new ArrayList<List<Integer>>();
+        int i,j,t;
+        for(i=0;i<numRows;i++)
+        {
+            List<Integer>now=new ArrayList<Integer>();
+            now.add(1);
+            if(i==0)
+            {
+                ans.add(now);
+                continue;
+            }
+            for(j=1;j<i;j++)
+            {
+                now.add(ans.get(i-1).get(j-1)+ans.get(i-1).get(j));
+            }
+            now.add(1);
+            ans.add(now);
+        }
+        return ans;
+    }
+}

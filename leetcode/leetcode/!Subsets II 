@@ -1,0 +1,73 @@
+//just imitate,each time add the new element to the set before
+public class Solution {
+	public class node
+	{
+		int cnt;
+		int val;
+		node(int a,int b)
+		{
+			cnt=a;
+			val=b;
+		}
+	}
+	public List<List<Integer>> getRepeat(node t)
+	{
+		int cnt=t.cnt,v=t.val,i;
+		List<List<Integer>>ans=new ArrayList<List<Integer>>();
+		List<Integer>t1;
+		t1=new ArrayList<Integer>();
+		for(i=0;i<cnt;i++)
+		{
+			t1.add(v);
+			ans.add(t1);
+			t1=new ArrayList<Integer>(t1);
+		}
+		return ans;
+	}
+    public List<List<Integer>> subsetsWithDup(int[] num) {
+        List<List<Integer>>ans=new ArrayList<List<Integer>>();
+        List<List<Integer>>repeat;
+        List<Integer>empty=new ArrayList<Integer>();
+        List<Integer>temp;
+        List<node>l=new ArrayList<node>();
+        int i,j,k,size,len=num.length;
+        if(len==0)
+        {
+        	return ans;
+        }
+        Arrays.sort(num);
+        int cnt;
+        i=0;
+        while(i<len)
+        {
+        	j=i;
+        	cnt=0;
+        	while(j<len&&num[j]==num[i])
+        	{
+        		cnt++;
+        		j++;
+        	}
+        	node n=new node(cnt,num[i]);
+        	l.add(n);
+        	i=j;
+        }
+
+        len=l.size();
+        ans.add(empty);
+        for(i=0;i<len;i++)
+        {
+        	size=ans.size();
+        	repeat=getRepeat(l.get(i));
+        	for(j=0;j<size;j++)
+        	{
+        		for(k=0;k<repeat.size();k++)
+        		{
+        			temp=new ArrayList<Integer>(ans.get(j));
+        			temp.addAll(repeat.get(k));
+        			ans.add(temp);
+        		}
+        	}
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,17 @@
+//一开始的空格split不掉
+//即" a" split完之后还是 空格,a
+//但是之间的空格和末尾的空格都能split掉
+public class Solution {
+    public String reverseWords(String s) {
+      String[] a = s.split("\\s+");;
+        int i,len=a.length;
+        String k="";
+        for(i=len-1;i>0;i--)
+        {
+        	k+=a[i]+" ";
+        }
+        if(a.length>0)
+        	k+=a[0];
+        return k.trim();
+    }
+}

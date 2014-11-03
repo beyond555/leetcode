@@ -1,0 +1,48 @@
+import java.util.*;
+/*
+ * 1.注意点重叠的情况
+ * 2.注意方位,(1,-1)和(-1,1)对应的方向是一样的
+ * 3.注意横坐标相同的时候,为了统一方向,用了abs
+ */
+public class Solution {
+	Map<Double,Integer>m=new HashMap<Double,Integer>();
+    public int maxPoints(Point[] a) {
+        int i,j,len=a.length,ans=0;
+        int same,cnt,line;
+        double t;
+        for(i=0;i<len;i++)
+        {
+        	m.clear();
+        	same=0;
+        	line=0;
+        	for(j=i+1;j<len;j++)
+        	{
+        		if(a[i].x==a[j].x&&a[i].y==a[j].y)
+        		{
+        			same++;
+        		}
+        		else
+        		{
+        			if(a[i].x<a[j].x)
+        				t=Math.atan2(a[j].y-a[i].y, a[j].x-a[i].x);
+        			else if(a[i].x>a[j].x)
+        				t=Math.atan2(a[i].y-a[j].y, a[i].x-a[j].x);
+        			else
+        				t=Math.atan2(Math.abs(a[i].y-a[j].y), a[i].x-a[j].x);
+    				if(!m.containsKey(t))
+    					m.put(t, 1);
+    				else
+    				{
+    					cnt=m.get(t);
+    					m.put(t, cnt+1);
+    				}
+    	//			System.out.println(t+" "+m.get(t));
+    				line=Math.max(line,m.get(t));      			
+        		}
+        	}
+        	ans=Math.max(ans, line+same+1);
+        }
+//        System.out.println(ans);
+        return ans;
+    }
+}

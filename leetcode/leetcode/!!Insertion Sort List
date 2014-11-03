@@ -1,0 +1,80 @@
+/*
+1.插入排序和选择排序是两回事，我搞反了
+选择排序是每次取剩下最小的作为tail加入到排序好的队列去
+而插入排序，第i次排序是针对前i个数的，也就是把第i个数放到前i-1个排序好的序列中的合适位置
+2.直接新弄一个ListNode N来记录新的list,方便很多，可以模拟数组了
+3.注意N=head去模拟队列的时候,N.next=null一定要设置，要不然去新队列里面找,本来第一次只有头结点的，结果链没断，还是原来所有节点
+4.第二段是我超时的选择排序的代码
+*/
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head==null)
+        	return head;
+    	ListNode N,now,next,t,tail;
+        N=now=head;
+        now=now.next;
+        N.next=null;
+        while(now!=null)
+        {
+        	next=now.next;
+        	if(now.val<N.val)
+        	{
+        		now.next=N;
+        		N=now;
+        	}
+        	else
+        	{
+        		t=N;
+        		while(t.next!=null&&t.next.val<now.val)
+        			t=t.next;
+        		tail=t.next;
+        		t.next=now;
+        		now.next=tail;
+        	}
+        	now=next;
+        }
+        return N;
+    }
+    public void debug(ListNode N)
+    {
+    	while(N!=null)
+        {
+        	System.out.print(N.val+" ");
+        	N=N.next;
+        }
+        System.out.println();
+    }
+}
+/*
+public class Solution {
+	public void swap(ListNode a,ListNode b)
+	{
+		int t=b.val;
+		b.val=a.val;
+		a.val=t;
+	}
+    public ListNode insertionSortList(ListNode head) {
+        ListNode a,b,ex;
+        a=head;
+        int Min;
+        while(a!=null)
+        {
+        	b=a;
+        	ex=a;
+        	Min=Integer.MAX_VALUE;
+        	while(b!=null)
+        	{
+        		if(b.val<Min)
+        		{
+        			Min=b.val;
+        			ex=b;
+        		}
+        		b=b.next;
+        	}
+        	swap(a,ex);
+        	a=a.next;
+        }
+        return head;
+    }
+}
+*/

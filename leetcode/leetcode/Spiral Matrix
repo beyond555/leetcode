@@ -1,0 +1,68 @@
+import java.util.*;
+
+public class Solution {
+	private int n,m;
+	private int vis=-999999;
+	public boolean suit(int x,int y,int [][]a)
+	{
+		if(x>=0&&x<n&&y>=0&&y<m&&a[x][y]!=vis)
+			return true;
+		return false;
+	}
+    public List<Integer> spiralOrder(int[][] a) {
+        List<Integer>l=new ArrayList<Integer>();
+        
+    	int i,j,x,y,cnt,id;
+    	n=a.length;
+    	if(n==0)
+    		return l;
+        m=a[0].length;
+        if(m==0)
+        	return  l;
+        x=y=0;
+        id=1;
+        cnt=m*n;
+        while(id<=cnt)
+        {
+        	while(suit(x,y,a))
+        	{
+        		l.add(a[x][y]);
+        		a[x][y]=vis;
+        		y++;
+        		id++;
+        	}
+        	y--;
+        	x++;
+        	while(suit(x,y,a))
+        	{
+        		l.add(a[x][y]);
+        		a[x][y]=vis;
+        		x++;
+        		id++;
+        	}
+        	x--;
+        	y--;
+        	while(suit(x,y,a))
+        	{
+        		l.add(a[x][y]);
+        		a[x][y]=vis;
+        		y--;
+        		id++;
+        	}
+        	y++;
+        	x--;
+        	while(suit(x,y,a))
+        	{
+        		l.add(a[x][y]);
+        		a[x][y]=vis;
+        		x--;
+        		id++;
+        	}
+        	x++;
+        	y++;
+        }
+      //  for(i=0;i<l.size();i++)
+      //  	System.out.println(l.get(i));
+        return l;
+    }
+}

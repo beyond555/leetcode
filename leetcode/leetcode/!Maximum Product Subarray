@@ -1,0 +1,31 @@
+/*
+dp,记录第i个位置能得到的最大正数和最小负数,没有的0来保留,返回pos数组最大的
+问题就是只有一个数且为负数的情况，不是返回0(必须要选择至少一个数字)
+*/
+public class Solution {
+	public int max(int a,int b,int c)
+	{
+		return Math.max(Math.max(a, b), c);
+	}
+	public int min(int a,int b,int c)
+	{
+		return Math.min(Math.min(a, b), c);
+	}
+    public int maxProduct(int[] A) {
+        int i,len=A.length;
+        if(len==1)
+        	return A[0];
+        int pos[]=new int[len+1];
+        int neg[]=new int[len+1];
+        int ans=Integer.MIN_VALUE;
+        for(i=1;i<=len;i++)
+        {
+        	
+        	pos[i]=max(A[i-1],A[i-1]*pos[i-1],A[i-1]*neg[i-1]);
+        	neg[i]=min(A[i-1],A[i-1]*pos[i-1],A[i-1]*neg[i-1]);
+        	if(pos[i]>ans)
+        		ans=pos[i];
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,206 @@
+/*
+ * 这一题明白了ArrayList和LinkedList区别
+ * Stringbuilder和StringBuffer区别
+ * 用bfs直接算路径,用父节点记录路径,然后一次递归完成所有路径的保存
+ * 上面是我的代码就是tle,下面是别人ac代码,思路几乎和我一样,1000ms
+ * 这个题就是各种stl操作太费时间了
+ */
+import java.util.*;
+class node
+{
+	String s;
+	int step;
+	node(String s,int step)
+	{
+		this.s=s;
+		this.step=step;
+	}
+}
+public class Solution {
+	public List<List<String>>ans=new LinkedList<List<String>>();
+	public int minlength=-1;
+	public Map<String,List<String>>p=new HashMap<String,List<String>>();
+	public Set<String> dict=new HashSet<String>();
+	public void bfs(String start, String end)
+	{
+		Queue<node>q=new LinkedList<node>();
+		List<String>vis=new ArrayList<String>();
+		int nowstep=1;
+		vis.add(start);
+		node head=new node(start,1);
+		int i,len=start.length();
+		q.add(head);
+		StringBuilder sb;
+		char c;
+		while(q.size()>0)
+		{
+			head=q.poll();
+			nowstep=head.step;
+		//	System.out.println(head.s+" "+nowstep);
+			if(minlength!=-1&&nowstep>=minlength)
+				return ;
+			for(i=0;i<len;i++)
+			{
+				sb=new StringBuilder(head.s);
+				for(c='a';c<='z';c++)
+				{
+					sb.setCharAt(i, c);
+					if(dict.contains(sb.toString())&&!vis.contains(sb.toString()))
+					{
+	//					System.out.println(head+" "+sb.toString());
+						if(!p.containsKey(sb.toString()))
+						{
+							List<String>temp=new LinkedList<String>();
+							temp.add(head.s);
+							p.put(sb.toString(), temp);
+						}
+						else
+						{
+							p.get(sb.toString()).add(head.s);
+		//					System.out.println(p);
+						}
+						if(sb.toString().equals(end))
+						{
+							if(minlength==-1)
+								minlength=nowstep+1;
+							
+							if(nowstep+1==minlength)
+							{
+							//	path(sb.toString());
+							}
+							
+						}
+						else
+						{
+							vis.add(sb.toString());
+							q.add(new node(sb.toString(),nowstep+1));
+						}
+					}
+				}
+			}
+		}
+		return ;
+	}
+	public void path(String end,List<String>next)
+	{
+		List<String>now;
+//		System.out.println(end+p.get(end)+next);
+		
+		if(p.containsKey(end))
+		{
+			List<String>parent=p.get(end);
+			int i,len=parent.size();
+			for(i=0;i<len;i++)
+			{
+				now=new LinkedList<String>(next);
+				now.add(0,parent.get(i));
+				path(parent.get(i),now);
+			}
+		}
+		else
+		{
+			ans.add(next);
+		}
+		return ;
+	}
+	public List<List<String>> findLadders(String start, String end, Set<String> dict) {
+		List<String>t=new ArrayList<String>();
+        if(start.equals(end))
+        {
+        	t.add(start);
+        	ans.add(t);
+        	return ans;
+        }
+        dict.add(end);
+        this.dict=dict;
+        bfs(start,end);
+        t.add(end);
+        path(end,t);
+     //   System.out.println(ans);
+        return ans;
+    }
+}
+
+/*
+ * class Node {
+    int no;
+    String val;
+    LinkedList<Node> prev;    
+    
+    Node(int no, String v) {
+        this.no = no;
+        this.val = v;
+    }
+    
+    void addPrev(Node pNode) {
+        if (prev == null) {
+            prev = new LinkedList<Node>();
+        }
+        prev.add(pNode);
+    }
+}
+
+public class Solution {    
+    ArrayList<ArrayList<String>> answer;
+    
+    public void findPath(Node node, ArrayList<String> cur, String start) {
+        if (node.val.equals(start)) {
+            answer.add(cur);
+            return;
+        }
+        ArrayList<String> temp;
+        for (Node n : node.prev) {
+            temp = new ArrayList<String>(cur);
+            temp.add(0, n.val);
+            findPath(n, temp, start);
+        }
+    }
+    
+    public ArrayList<ArrayList<String>> findLadders(String start, String end, HashSet<String> dict) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        HashMap<String, Node> map = new HashMap<String, Node>();
+        Queue<Node> queue = new LinkedList<Node>();
+        Node node = new Node(0, start);
+        Node endNode = null;
+        map.put(start, node);
+        queue.add(node);
+        boolean stop = false;
+        while (queue.size() > 0 && !stop) {
+            int count = queue.size();
+            for (int i = 0; i < count; i++) {
+                node = queue.poll();
+                for (int j = 0; j < node.val.length(); j++) {
+                    StringBuilder t = new StringBuilder(node.val);
+                    for (char k = 'a'; k <= 'z'; k++) {
+                        t.setCharAt(j, k);
+                        if (dict.contains(t.toString())) {
+                            Node v = map.get(t.toString());
+                            if (v == null) {
+                                Node temp = new Node(node.no + 1, t.toString());
+                                temp.addPrev(node);
+                                queue.add(temp);
+                                map.put(t.toString(), temp);
+                                if (t.toString().equals(end)) {
+                                    endNode = temp;
+                                    stop = true;
+                                }
+                            }
+                            else {
+                                if (v.no == node.no + 1) {
+                                    v.addPrev(node);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        answer = new ArrayList<ArrayList<String>>();
+        if (endNode != null) {
+            findPath(endNode, new ArrayList<String>(Arrays.asList(end)), start);
+        }
+        return answer;
+    }
+}
+ */

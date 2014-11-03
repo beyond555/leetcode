@@ -1,0 +1,32 @@
+/*
+ * 每个node的label是唯一的,这样就可以用map作为唯一标识符
+ */
+import java.util.*;
+
+public class Solution {
+	Map<Integer,UndirectedGraphNode>m=new HashMap<Integer,UndirectedGraphNode>();
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    	if(node==null)
+    		return null;
+    	int v=node.label;
+    	int i;
+    	List<UndirectedGraphNode>l=node.neighbors;
+    	UndirectedGraphNode t,temp;
+    	List<UndirectedGraphNode>now=new ArrayList<UndirectedGraphNode>();
+    	UndirectedGraphNode head=new UndirectedGraphNode(v);
+    	m.put(v,head);
+    	for(i=0;i<l.size();i++)
+    	{
+    		t=l.get(i);
+    		if(m.containsKey(t.label))
+    		{
+    			now.add(m.get(t.label));
+    			continue;
+    		}
+    		temp=cloneGraph(t);
+    		now.add(temp);
+    	}
+    	head.neighbors=now;
+    	return head;
+    }
+}

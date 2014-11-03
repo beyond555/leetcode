@@ -1,0 +1,34 @@
+import java.util.*;
+/*
+ * 每次枚举end,如果之前出现过,位置pre,pre+1和之前的最大的起点start比较看是否更新
+ * 每次保证start到i是满足条件的串
+ * 如果不包含的话,就用i-start+1保存当前最长距离
+ */
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int i,len=s.length();
+        if(len==0)
+            return 0;
+        int start=0,pre,ans=0;
+        char c;
+        Map<Character,Integer>m=new HashMap<Character,Integer>();
+        for(i=0;i<len;i++)
+        {
+            c=s.charAt(i);
+            if(!m.containsKey(c))
+            {
+                ans=Math.max(ans, i-start+1);
+                m.put(c, i);
+            }
+            else
+            {
+                pre=m.get(c);
+                if(pre+1>start)             
+                    start=pre+1;
+                ans=Math.max(ans, i-start+1);
+                m.put(c, i);
+            }
+        }
+        return ans;
+    }
+}

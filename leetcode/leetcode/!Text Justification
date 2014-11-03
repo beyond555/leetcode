@@ -1,0 +1,64 @@
+import java.util.*;
+/*
+ * 注意 ,不是最后一行算中间空格的时候,(r-l)做分母,要注意0的情况即l==r
+ * 可以直接加入到前面的最后一行依次叠加,就ok
+ */
+public class Solution {
+	public String build(String[] a,int l,int r,int L)
+	{
+		StringBuffer sb;
+		int left=L,i,j;
+		if(r==a.length-1||l==r)
+		{
+			sb=new StringBuffer("");
+			for(i=l;i<=r;i++)
+			{
+				sb.append(a[i]);
+				if(i!=r)
+					sb.append(" ");
+			}
+			while(sb.length()<L)
+				sb.append(" ");
+			return sb.toString();
+		}
+		
+		for(i=l;i<=r;i++)
+		{
+			left-=a[i].length();
+		}
+		
+		int mod=left%(r-l);
+		int t=left/(r-l);
+	//	System.out.println("left "+left+" t "+t+" mod "+mod);
+		sb=new StringBuffer("");
+		for(i=l;i<=r;i++)
+		{
+			sb.append(a[i]);
+			if(i!=r)
+			{
+				for(j=0;j<t;j++)
+					sb.append(" ");
+			}
+			if(i-l<mod)
+				sb.append(" ");
+		}
+		return sb.toString();
+	}
+    public List<String> fullJustify(String[] a, int L) {
+    	List<String>ans=new ArrayList<String>();
+        int i=0,j,len=a.length,t;
+        while(i<len)
+        {
+        	t=a[i].length();
+        	j=i+1;
+        	while(j<len&&t+1+a[j].length()<=L)
+        	{
+        		t=t+1+a[j].length();
+        		j++;
+        	}
+        	ans.add(build(a,i,j-1,L));
+        	i=j;
+        }
+        return ans;
+    }
+}

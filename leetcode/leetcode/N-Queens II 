@@ -1,0 +1,55 @@
+/*
+ dfs
+*/
+
+public class Solution {
+	int n;
+	int ans=0;
+	int row[];
+	public void dfs(int line,int step)
+	{
+		int i,j;
+
+	//	System.out.println(line+" "+step);
+		if(step==n)
+		{
+	/*		for(i=0;i<step;i++)
+				System.out.print(row[i]);
+			System.out.println();
+	*/		ans++;
+			return ;
+		}
+		boolean f;
+		for(i=0;i<n;i++)
+		{
+			f=true;
+			for(j=0;j<step;j++)
+			{
+				if(row[j]==i||(Math.abs(line-j)==Math.abs(i-row[j])))
+				{
+					f=false;
+					break;
+				}
+			}
+			if(f)
+			{
+			//	System.out.println("suit "+step+" "+i);
+				row[step]=i;
+				dfs(line+1,step+1);
+			}
+		}
+	}
+	public int totalNQueens(int n) {
+    	this.n=n;
+    	int i;
+        row=new int[n];
+        for(i=0;i<n;i++)
+        {
+    //    	System.out.println("----");
+        	row[0]=i;
+        	dfs(1,1);
+        }
+ //       System.out.println(ans);
+        return ans;
+    }
+}

@@ -1,0 +1,47 @@
+/*
+ * 先把一模一样List依次插入原环,形成1,1,2,2,3,3...这种形式
+ * 然后对合并的list的奇数位上的点,若random不为null. t.next.random=t.random.next;设置random
+ * 然后将合并的List再拆开成两份,一份是原来的,一份是copy的
+ */
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        if(head==null)
+        	return null;
+        RandomListNode t=head,c;
+        while(t!=null)
+        {
+        	c=new RandomListNode(t.label);
+        	c.next=t.next;
+        	t.next=c;
+        	t=c.next;
+        }
+        t=head;
+        while(t!=null)
+        {
+        	if(t.random!=null)
+        	{
+        		t.next.random=t.random.next;
+        	}
+        	t=t.next.next;
+        }
+        t=head;
+        RandomListNode old,New,temp,ans=null;
+        while(t!=null)
+        {
+        	old=t;
+        	New=t.next;
+        	if(ans==null)
+        		ans=New;
+        	if(New.next!=null)
+        	{
+        		temp=New.next.next;
+        	}
+        	else
+        		temp=null;
+        	old.next=New.next;
+        	New.next=temp;
+        	t=t.next;
+        }
+        return ans;
+    }
+}

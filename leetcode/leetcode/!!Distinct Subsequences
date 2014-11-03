@@ -1,0 +1,30 @@
+/*
+ * 1.dp[i][j]表示a串i位置匹配到b串j位置的方法数目
+ * 2.注意j==1的时候要特判,因为此时dp[i][1]可以用a串的第i个位置去匹配b串的第一个位置,
+ * 是在dp[i-1][j]的方法上又多了一个方法 如aa,a,
+ * 当j不为1的时候,那么就是+dp[i-1][j-1]了,此时要求前面a串i-1个位置把b串j-1个位置匹配完才算
+*/
+public class Solution {
+    public int numDistinct(String S, String T) {
+        int i,j,a=S.length(),b=T.length();
+        int dp[][]=new int[a+1][b+1];
+        dp[0][0]=1;
+        for(i=1;i<=a;i++)
+        {
+        	for(j=1;j<=Math.min(i, b);j++)
+        	{
+    			dp[i][j]=dp[i-1][j];
+        		if(S.charAt(i-1)==T.charAt(j-1))
+        		{
+        			if(j==1)
+        				dp[i][j]+=1;
+        			else
+        				dp[i][j]+=dp[i-1][j-1];
+        	//		System.out.println(i+" "+j);
+        		}
+        	}
+        }
+       
+        return dp[a][b];
+    }
+}

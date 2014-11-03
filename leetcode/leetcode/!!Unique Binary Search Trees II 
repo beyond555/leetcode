@@ -1,0 +1,111 @@
+下面两份代码，第二份错的地方我还没找到原因。
+/*
+user defined class = means pointer not just the value
+TreeNode a,b,c;
+a=new TreeNode(3);
+b=a;
+a.val=2;
+c=a;
+Then both b.val and c.val=2;
+So each time add a new root,
+the root must be a new TreeNode,you must not just change one attribute and add it to list,because it keeps the address not just the value
+
+*/
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; left = null; right = null; }
+ * }
+ */
+public class Solution {
+    public List<TreeNode> sub(int b,int e)
+	{
+		List<TreeNode>ans=new ArrayList<TreeNode>();
+        List<TreeNode>left,right;
+        int v,i,j;
+        TreeNode root;
+        if(b>e)
+        {
+            root=null;
+            ans.add(root);
+            return ans;
+        }
+        if(b==e)
+        {
+            root=new TreeNode(b);
+            ans.add(root);
+            return ans;
+        }
+        for(v=b;v<=e;v++)
+        {
+            left=sub(b,v-1);
+            right=sub(v+1,e);
+            for(i=0;i<left.size();i++)
+            {
+                for(j=0;j<right.size();j++)
+                {
+                    root=new TreeNode(v);
+                    root.left=left.get(i);
+                    root.right=right.get(j);
+                    ans.add(root);
+                }
+            }
+        }
+        return ans;
+	}
+    public List<TreeNode> generateTrees(int n) {
+        return sub(1,n);
+    }
+}
+
+错的
+    public class Solution {
+        public void deal(TreeNode root,int off)
+        {
+            if(root==null||off==0)
+                return ;
+            root.val+=off;
+            deal(root.left,off);
+            deal(root.right,off);
+        }
+        public List<TreeNode> generateTrees(int n) {
+            List<TreeNode>ans=new ArrayList<TreeNode>();
+            List<TreeNode>left,right;
+            int v,i,j;
+            TreeNode root;
+            if(n==0)
+            {
+                root=null;
+                ans.add(root);
+                return ans;
+            }
+            if(n==1)
+            {
+                root=new TreeNode(1);
+                ans.add(root);
+                return ans;
+            }
+            for(v=1;v<=n;v++)
+            {
+                left=generateTrees(v-1);
+                right=generateTrees(n-v);
+                for(i=0;i<right.size();i++)
+                    deal(right.get(i),v);
+                for(i=0;i<left.size();i++)
+                {
+                    for(j=0;j<right.size();j++)
+                    {
+                        root=new TreeNode(v);
+                        root.left=left.get(i);
+                        root.right=right.get(j);
+                        ans.add(root);
+                    }
+                }
+            }
+            return ans;
+        }
+    }

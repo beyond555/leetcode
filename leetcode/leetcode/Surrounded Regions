@@ -1,0 +1,78 @@
+//size may be 0(m==0)
+import java.util.*;
+public class Solution {
+	public int px[]={1,-1,0,0};
+	public int py[]={0,0,1,-1};
+	public boolean vis[][];
+	public class node
+	{
+		int x;
+		int y;
+		node(int X,int Y)
+		{
+			x=X;
+			y=Y;
+		}
+	}
+	public boolean suit(int i,int j,char[][] board)
+	{
+		int m=board.length,n=board[0].length;
+		if(i<0||i>=m||j<0||j>=n)
+			return false;
+		if(board[i][j]=='X')
+			return false;
+		if(vis[i][j])
+			return false;
+		return true;
+	}
+	public void bfs(char[][] board,int x,int y)
+	{
+		int i,a,b;
+		Queue<node>q=new LinkedList<node>();
+		node next,head=new node(x,y);
+		vis[x][y]=true;
+		q.add(head);
+		while(q.size()>0)
+		{
+			head=q.poll();
+			for(i=0;i<4;i++)
+			{
+				a=head.x+px[i];
+				b=head.y+py[i];
+				if(suit(a,b,board))
+				{
+					vis[a][b]=true;
+					next=new node(a,b);
+					q.add(next);
+				}
+			}
+		}
+	}
+    public void solve(char[][] board) {
+        int i,j,m=board.length,n;
+        if(m==0)
+        	return ;
+        n=board[0].length;
+        vis=new boolean[m][n];
+        for(i=0;i<m;i++)
+        {
+        	for(j=0;j<n;j++)
+        	{
+        		if((i==0||i==m-1||j==0||j==n-1)&&(board[i][j]=='O')&&!vis[i][j])
+        		{
+        			bfs(board,i,j);
+        		}
+        	}
+        }
+        for(i=0;i<m;i++)
+        {
+        	for(j=0;j<n;j++)
+        	{
+        		if(vis[i][j])
+        			board[i][j]='O';
+        		else
+        			board[i][j]='X';
+        	}
+        }
+    }
+}

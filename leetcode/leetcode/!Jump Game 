@@ -1,0 +1,24 @@
+//e>=len-1 means win 
+public class Solution {
+    public boolean canJump(int[] A) {
+        int i,len=A.length,dis[]=new int[len];
+        int b,e,Max;
+        b=e=0;
+        while(b<=e)
+        {
+        	Max=-1;
+        	for(i=b;i<=e;i++)
+        	{
+        		dis[i]=i+A[i];
+        		Max=Math.max(Max, dis[i]);
+        	}
+        	b=e+1;
+        	e=Max;
+        	if(e>=len-1)
+        		return true;
+        }
+        if(b>e)
+        	return false;
+        return true;
+    }
+}

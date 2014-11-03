@@ -1,0 +1,44 @@
+import java.math.BigInteger;
+/*
+ * 题目说的很不清楚,要自己试了好多次
+ * 符号位就看地一个,哪怕后面很多+-号
+ * 然后从非符号位开始while,注意不是for if,也就是说中间有非法字符,那么收免得就不用惯了
+ * 用了BigInteger
+ * 
+ */
+public class Solution {
+    public int atoi(String str) {
+        str=str.trim();
+        StringBuffer sb=new StringBuffer("");
+        int i=0;
+        boolean number=false;
+        if(i<str.length()&&(str.charAt(i)=='+'||str.charAt(i)=='-'))
+        {
+        	i++;
+        }
+        if(i>0)
+        {
+        	if(str.charAt(i-1)=='-')
+        		sb.append("-");
+        	str=str.substring(i);
+        }
+        i=0;
+    	while(i<str.length()&&str.charAt(i)>='0'&&str.charAt(i)<='9')
+    	{
+    		number=true;
+    		sb.append(str.charAt(i));
+    		i++;
+    	}
+        str=sb.toString();
+        if(str.length()==0||number==false)
+    		return 0;
+   //     System.out.println(str);
+        BigInteger a;
+        a=new BigInteger(str);
+        if(a.compareTo(BigInteger.valueOf(2147483647))>0)
+        	return 2147483647;
+        else if(a.compareTo(BigInteger.valueOf(-2147483648))<0)
+        	return -2147483648;
+        return Integer.valueOf(a.toString());
+    }
+}

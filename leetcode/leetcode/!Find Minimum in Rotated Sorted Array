@@ -1,0 +1,19 @@
+/*
+ * 巧妙的二分,画图就懂
+ * 难点就是二分的判断情况
+ */
+public class Solution {
+    public int findMin(int[] a) {
+        int l,r=a.length-1,m;
+        l=0;
+        while(l<r)
+        {
+        	m=(l+r)/2;
+        	if(a[m]>a[r])
+        		l=m+1;
+        	else
+        		r=m;
+        }
+        return a[l];
+    }
+}

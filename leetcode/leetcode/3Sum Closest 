@@ -1,0 +1,41 @@
+import java.util.*;
+/*
+ * 和 3 sum差不多
+ */
+public class Solution {
+	public int threeSumClosest(int[] a, int target) {
+		Arrays.sort(a);
+        int i,len=a.length,l,r,sum;
+        int ans=9999999;
+        for(i=0;i<len;i++)
+        {
+        	l=i+1;
+        	r=len-1;
+        	while(l<r)
+        	{
+        		sum=a[i]+a[l]+a[r];
+        		if(sum==target)
+        		{
+        			ans=target;
+        			return ans;
+        		}
+        		else if(sum<target)
+        		{
+        		//	System.out.println(a[i]+" "+a[l]+" "+a[r]);
+        			l++;
+        			if(Math.abs(target-sum)<Math.abs(target-ans))
+        				ans=sum;
+        		}
+        		else
+        		{
+        		//	System.out.println(a[i]+" "+a[l]+" "+a[r]);
+        			r--;
+        			if(Math.abs(target-sum)<Math.abs(target-ans))
+        				ans=sum;
+        		}
+        		
+        	}
+        }
+        return ans;
+    }
+}

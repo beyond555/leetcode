@@ -1,0 +1,69 @@
+import java.util.*;
+/*
+ * 和 3 sum 一样
+ */
+public class Solution {
+	public List<List<Integer>>ans=new ArrayList<List<Integer>>();
+	public int a[];
+	public boolean judge(int i,int j,int k,int l)
+	{
+		int s,len=ans.size();
+		List<Integer>t;
+		for(s=0;s<len;s++)
+		{
+			t=ans.get(s);
+			if(t.get(0)==a[i]&&t.get(1)==a[j]&&t.get(2)==a[k]&&t.get(3)==a[l])
+				return true;
+		}
+		return false;
+	}
+	public List<List<Integer>> fourSum(int[] a, int target) {
+        Arrays.sort(a);
+       
+        this.a=a;
+        int i,j,len=a.length,l,r,sum;
+        List<Integer>t;
+        for(i=0;i<len;i++)
+        {
+        	for(j=i+1;j<len;j++)
+        	{
+	        	l=j+1;
+	        	r=len-1;
+	        	while(l<r)
+	        	{
+	        		
+	        		sum=a[i]+a[j]+a[l]+a[r];
+	        		if(sum==target)
+	        		{
+	        			if(!judge(i,j,l,r))
+	        			{
+	        		//		System.out.println(a[i]+" "+a[l]+" "+a[r]);
+	        				t=new ArrayList<Integer>();
+	        				t.add(a[i]);
+	        				t.add(a[j]);
+	        				t.add(a[l]);
+	        				t.add(a[r]);
+	        				ans.add(t);
+	        			}
+	        			l++;
+	        			r--;
+	        		}
+	        		else if(sum<target)
+	        			l++;
+	        		else
+	        			r--;
+	        	}
+        	}
+        }
+  /*      for(i=0;i<ans.size();i++)
+        {
+        	t=ans.get(i);
+        	for(l=0;l<4;l++)
+        	{
+        		System.out.print(ans.get(i).get(l)+" ");
+        	}
+        	System.out.println();
+        }*/
+        return ans;
+    }
+}

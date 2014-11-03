@@ -1,0 +1,35 @@
+/*
+ * 本来三个字符串的
+ * 但是可以用a,b串去dp
+ * dp[i][j]表示a串前i个加上b串前j个能够match c串的i+j个,
+ */
+public class Solution {
+    public boolean isInterleave(String a, String b, String c) {
+        int i,j,len1=a.length(),len2=b.length(),len3=c.length();
+        if(len1+len2!=len3)
+        	return false;
+        boolean dp[][]=new boolean[len1+1][len2+1];
+        dp[0][0]=true;
+        for(i=0;i<=len1;i++)
+        {
+        	for(j=0;j<=len2;j++)
+        	{
+        		if(i==0&&j==0)
+        			continue;
+        		if(i==0)
+        		{
+        			dp[i][j]=dp[i][j-1]&&(b.charAt(j-1)==c.charAt(j-1));
+        		}
+        		else if(j==0)
+        		{
+        			dp[i][j]=dp[i-1][j]&&(a.charAt(i-1)==c.charAt(i-1));
+        		}
+        		else
+        		{
+        			dp[i][j]=(dp[i-1][j]&&(a.charAt(i-1)==c.charAt(i+j-1)))||(dp[i][j-1]&&(b.charAt(j-1)==c.charAt(i+j-1)));
+    			}
+        	}
+        }
+        return dp[len1][len2];
+    }
+}

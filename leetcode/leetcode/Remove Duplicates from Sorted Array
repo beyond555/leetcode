@@ -1,0 +1,23 @@
+/*
+while(j<len&&A[j]==t) not while(A[j]==t&&j<len)
+first confirm the boundary!
+*/
+public class Solution {
+    public int removeDuplicates(int[] A) {
+        int t,len=A.length,i,j,id=0;
+        int B[]=new int[len];
+        i=0;
+        while(i<len)
+        {
+            t=A[i];
+            B[id++]=t;
+            j=i;
+            while(j<len&&A[j]==t)
+                j++;
+            i=j;
+        }
+        for(i=0;i<id;i++)
+            A[i]=B[i];
+        return id;
+    }
+}

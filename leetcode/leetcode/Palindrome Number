@@ -1,0 +1,22 @@
+import java.util.ArrayList;
+import java.util.List;
+public class Solution {
+    public boolean isPalindrome(int x) {
+        List<Integer>l=new ArrayList<Integer>();
+        if(x==0)
+            return true;
+        if(x<0)
+            return false;
+        while(x!=0)
+        {
+            l.add(x%10);
+            x/=10;
+        }
+        int len=l.size();
+        int i;
+        for(i=0;i<len/2;i++)
+            if(l.get(i)!=l.get(len-1-i))
+                return false;
+        return true;
+    }
+}

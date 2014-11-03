@@ -1,0 +1,68 @@
+public class Solution {
+    public List<String> get(char s)
+    {
+        int i=s-'0';
+        List<String>l =new ArrayList<String>();
+        if(i==2)
+        {
+            l.add("a");l.add("b");l.add("c");
+        }
+        else if(i==3)
+        {
+            l.add("d");l.add("e");l.add("f");
+        }
+        else if(i==4)
+        {
+            l.add("g");l.add("h");l.add("i");
+        }
+        else if(i==5)
+        {
+            l.add("j");l.add("k");l.add("l");
+        }
+        else if(i==6)
+        {
+            l.add("m");l.add("n");l.add("o");
+        }
+        else if(i==7)
+        {
+            l.add("p");l.add("q");l.add("r");l.add("s");
+        }
+        else if(i==8)
+        {
+            l.add("t");l.add("u");l.add("v");
+        }
+        else if(i==9)
+        {
+            l.add("w");l.add("x");l.add("y");l.add("z");
+        }
+        return l;
+    }
+    public List<String> letterCombinations(String digits) {
+        List<String>l =new ArrayList<String>();
+        List<String>ans =new ArrayList<String>();
+        List<String>t =new ArrayList<String>();
+        String temp;
+        int i,j,k,size,len=digits.length();
+        l.add("");
+        if(len==0)
+            return l;
+        
+        for(i=0;i<len;i++)
+        {
+            t=get(digits.charAt(i));
+            size=l.size();
+            for(j=0;j<size;j++)
+            {
+                for(k=0;k<t.size();k++)
+                {
+                    temp=l.get(j)+t.get(k);
+                    ans.add(temp);
+                }
+            }
+            l=new ArrayList<String>(ans);
+            ans.clear();
+        }
+        
+        return l;
+    }
+}

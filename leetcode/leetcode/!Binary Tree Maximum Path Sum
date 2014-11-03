@@ -1,0 +1,78 @@
+/*
+1.using extends
+when use extends, do not need to re-define int val;
+Otherwise Node.val are not assigned as super(x) means assign x to TreeNode.val .
+2.in funtion getans(),return a small value when root is null in case of the root.val<0
+v means you can choose right.max (if > 0) and left.max(if > 0) and add it to root.val(cann't be ignored)
+*/
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+	public class Node extends TreeNode {
+		int max;
+		Node left;
+		Node right;
+		Node(int x) {
+			super(x);
+			max=0;
+		}	
+		
+	}
+    public Node copyTree(TreeNode root)
+    {
+    	if(root==null)
+			return null;
+        Node temp=new Node(root.val);
+        temp.left=copyTree(root.left);
+        temp.right=copyTree(root.right);
+        return temp;
+    }
+    public int getmax(Node root)
+    {
+    	if(root==null)
+    		return 0;
+    	int l=0,r=0,t,v=root.val;
+    	l=getmax(root.left);
+    	r=getmax(root.right);
+    	if(l>r)
+    		t=l;
+    	else
+    		t=r;
+    	if(t<0)
+    		root.max=v;
+    	else
+    		root.max=t+v;
+    	return root.max;
+    }
+    public int queryMax(Node root)
+    {
+    	if(root==null)
+    		return 0;
+		if(root.max<0)
+    		return 0;
+    	return root.max;
+    }
+    public int getans(Node root)
+    {
+    	if(root==null)
+    		return -999999;
+    	int v=root.val+queryMax(root.left)+queryMax(root.right);
+    	int l=getans(root.left);
+    	int r=getans(root.right);
+    	return Math.max(Math.max(v, l),r);
+    }
+    public int maxPathSum(TreeNode root) {
+        if(root==null)
+            return 0;
+        Node c=copyTree(root);
+        getmax(c);
+        return getans(c);
+    }
+}

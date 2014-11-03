@@ -1,0 +1,64 @@
+/*next=copy(n.get(j));
+make a copy,as t2.add(next);
+*/
+public class Solution {
+    public List<TreeNode> get(TreeNode root)
+    {
+        List<TreeNode>l=new ArrayList<TreeNode>();
+        if(root==null)
+            return l;
+        if(root.left!=null)
+        	l.add(root.left);
+        if(root.right!=null)
+            l.add(root.right);
+        return l;
+    }
+    public TreeNode copy(TreeNode a)
+    {
+    	TreeNode b=new TreeNode(a.val);
+    	b.left=a.left;
+    	b.right=a.right;
+    	return b;
+    }
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    	List<List<Integer>>ans =new ArrayList<List<Integer>>();
+    	List<TreeNode>t1=new ArrayList<TreeNode>();
+    	List<TreeNode>t2=new ArrayList<TreeNode>();
+    	List<Integer> row=new ArrayList<Integer>();;
+    	List<TreeNode> n=new ArrayList<TreeNode>();
+    	TreeNode now,next;
+    	if(root==null)
+    		return ans;
+    	t1.add(root);
+    	row.add(root.val);
+    	ans.add(row);
+    	int i,j,len,level=1;
+    	while(true)
+    	{
+    		len=t1.size();
+    		row=new ArrayList<Integer>();
+    		for(i=0;i<len;i++)
+    		{
+    			now=t1.get(i);
+    			n=get(now);
+    			for(j=0;j<n.size();j++)
+    			{
+    				next=copy(n.get(j));
+    				t2.add(next);
+    				if(level%2==1)
+    					row.add(0,next.val);
+    				else
+    					row.add(next.val);
+    			}
+    		}
+    		t1=new ArrayList<TreeNode>(t2);
+    		if(t1.size()==0)
+    			break;
+    		ans.add(row);
+    		t2.clear();
+    		level++;
+    	}
+    	
+    	return ans;
+    }
+}

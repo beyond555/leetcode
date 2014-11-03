@@ -1,0 +1,42 @@
+/*
+ * 注意二分,找最后一个小于,小于等于的时候用ceil,并且是l<r
+ * 查找相等的时候是l<=r,(r=len-1)注意
+ */
+public class Solution {
+	public int last2l(int a[],int target)
+	{
+		int l=0,r=a.length-1,m;
+		while(l<r)
+		{
+			m=(l+r+1)/2;
+			if(a[m]>target)
+				r=m-1;
+			else if(a[m]<target)
+				l=m;
+			else 
+				return m;
+		}
+		return r;
+	}
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int i,len=matrix.length;
+        int b[]=new int[len];
+        for(i=0;i<len;i++)
+        {
+        	b[i]=matrix[i][0];
+        }
+        int l,r,m,id=last2l(b,target);
+        l=0;r=matrix[0].length-1;
+        while(l<=r)
+		{
+			m=(l+r)/2;
+			if(matrix[id][m]>target)
+				r=m-1;
+			else if(matrix[id][m]<target)
+				l=m+1;
+			else 
+				return true;
+		}
+        return false;
+    }
+}

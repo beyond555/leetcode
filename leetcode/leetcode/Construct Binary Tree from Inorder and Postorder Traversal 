@@ -1,0 +1,47 @@
+/*
+be careful not to rp[i-Llen-1]=postorder[i];
+as the root is last element in postorder
+the right is below
+ri[i-Llen-1]=inorder[i];
+rp[i-Llen-1]=postorder[i-1];
+*/
+public class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+    	TreeNode root;
+    	int i,len=inorder.length;
+    	if(len==0)
+    		return null;
+    	if(len==1)
+        {
+        	root=new TreeNode(inorder[0]);
+        	return root;
+        }
+    	int v=postorder[len-1];
+    	
+    	root=new TreeNode(v);
+    	int Llen;
+    	for(i=0;i<len;i++)
+    	{
+    		if(inorder[i]==v)
+    			break;
+    	}
+		Llen=i;
+    	int li[]=new int[Llen];
+    	int lp[]=new int[Llen];
+    	for(i=0;i<Llen;i++)
+    	{
+    		li[i]=inorder[i];
+    		lp[i]=postorder[i];
+    	}
+    	root.left=buildTree(li,lp);
+    	int ri[]=new int[len-Llen-1];
+    	int rp[]=new int[len-Llen-1];
+    	for(i=Llen+1;i<len;i++)
+    	{
+    		ri[i-Llen-1]=inorder[i];
+    		rp[i-Llen-1]=postorder[i-1];
+    	}
+    	root.right=buildTree(ri,rp);
+    	return root;
+    }
+}

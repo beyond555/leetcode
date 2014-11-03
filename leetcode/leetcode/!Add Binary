@@ -1,0 +1,41 @@
+/*
+reverse a String
+StringBuffer.append
+cast t+'0' to char
+*/
+public class Solution {
+     public String addBinary(String a, String b) {
+        a = new   StringBuffer(a).reverse().toString();
+        b = new   StringBuffer(b).reverse().toString();
+        int i,t=0;
+        StringBuffer temp = new   StringBuffer();
+        char c;
+        for(i=0;i<a.length()&&i<b.length();i++)
+        {
+            t=a.charAt(i)-'0'+b.charAt(i)-'0'+t;
+            c=(char) (t%2+'0');
+            temp.append(c);
+            t/=2;
+        }
+        for(;i<a.length();i++)
+        {
+            t=a.charAt(i)-'0'+t;
+            c=(char) (t%2+'0');
+            temp.append(c);
+            t/=2;
+        }
+        for(;i<b.length();i++)
+        {
+            t=b.charAt(i)-'0'+t;
+            c=(char) (t%2+'0');
+            temp.append(c);
+            t/=2;
+        }
+        if(t>0)
+            {
+        	 c=(char) (t%2+'0');
+             temp.append(c);
+            }
+        return temp.reverse().toString();
+    }
+}

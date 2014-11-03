@@ -1,0 +1,61 @@
+/*
+ * 注意的是负数情况,deal里面写清楚了,写的while循环不断除以2对负数有问题
+ * 重新用位运算,用a&((1<<i))>0来判断这一位是否为0,涉及二进制原码,补码等问题
+ * 
+ * 思想:记录下各个二进制位上,出现的和,
+ * 对于唯一的那一个数,出现的位数上digit%3都不为0的,还原为原来的数字
+ * 
+ */
+public class Solution {
+	public int digit[]=new int[32];
+	public void deal(int a)
+	{
+	/*	int id=0;
+		while(a!=0)
+		{
+			digit[id]+=a%2;
+			a/=2;
+			id++;
+		}*/
+		int i,x;
+		for(i=0;i<32;i++)
+		{
+			x=(1<<i);
+			if((a&x)!=0)
+			{
+				digit[i]++;
+			}
+		}
+	}
+	public void debug()
+	{
+		int i;
+		for(i=0;i<32;i++)
+		{
+			System.out.print(digit[i]);
+		}
+		System.out.println();
+	}
+	public int get()
+	{
+		int i,t=0,p=1;
+		for(i=0;i<32;i++)
+		{
+			digit[i]%=3;
+		}
+		for(i=0;i<32;i++)
+		{
+			t+=p*digit[i];
+			p*=2;
+		}
+		return t;
+	}
+    public int singleNumber(int[] A) {
+    	int i,len=A.length;
+    	for(i=0;i<len;i++)
+    	{
+    		deal(A[i]);
+    	}
+    	return get();
+    }
+}

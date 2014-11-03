@@ -1,0 +1,23 @@
+//just find a rule
+public class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer>ans=new ArrayList<Integer>();
+        ans.add(0);
+        if(n==0)
+        	return ans;
+        if(n==1)
+        {
+        	ans.add(1);
+        	return ans;
+        }
+        List<Integer>reverse=new ArrayList<Integer>();
+        int i,off=1;
+        for(i=1;i<n;i++)
+        	off*=2;
+        ans=grayCode(n-1);
+        for(i=0;i<ans.size();i++)
+        	reverse.add(0,off+ans.get(i));
+        ans.addAll(reverse);
+        return ans;
+    }
+}

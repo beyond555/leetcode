@@ -1,0 +1,54 @@
+import java.util.*;
+/*
+ * sort之后逐个往后面比较,有点像以前的多个表演最多看几个.
+ * 有个注意的地方,compare函数比大小,小的返回-1,大的返回1,否则返回0(相等)
+ * 注意不要只有0,1返回.注意不要让compare函数产生矛盾即可
+ */
+public class Solution {
+    public List<Interval> merge(List<Interval> a) {
+    	Collections.sort(a, new Comparator<Interval>() {
+            @Override
+            public int compare(Interval A, Interval B) {
+                if(A.start!=B.start)
+                {
+                	if(A.start<B.start)
+                		return -1;
+                	else
+                		return 1;
+                }
+                return 0;
+            }
+        });
+        int i,len=a.size();
+        List<Interval>ans=new ArrayList<Interval>();
+        boolean f=false;
+        int begin = 0,end = 0;
+        Interval t;
+        for(i=0;i<len;i++)
+        {
+        	if(!f)
+        	{
+        		begin=a.get(i).start;
+        		end=a.get(i).end;
+        		f=true;
+        	}
+        	else
+        	{
+        		t=a.get(i);
+        		if(t.start<=end)
+        		{
+        			end=Math.max(end, t.end);
+        		}
+        		else
+        		{
+        			f=false;
+        			ans.add(new Interval(begin, end));
+        			i--;//keep track of the new begin
+        		}
+        	}
+        }
+        if(f)
+        	ans.add(new Interval(begin, end));
+        return ans;
+    }
+}

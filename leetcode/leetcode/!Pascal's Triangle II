@@ -1,0 +1,35 @@
+/*
+calculate C(n,m)
+take care of the overflow of the big ones
+use gcd to divide first then multiply
+*/
+public class Solution {
+    public int gcd(int a,int b)
+    {
+        int t;
+        if(a<b)
+        {
+            t=a;
+            a=b;
+            b=t;
+        }
+        if(a%b==0)
+            return b;
+        return gcd(b,a%b);
+    }
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer>l=new ArrayList<Integer>();
+        int i,t,up,down,g;
+        l.add(1);
+        t=1;up=rowIndex;down=1;
+        for(i=1;i<=rowIndex;i++)
+        {
+            g=gcd(up,down);
+            t=t/(down/g)*(up/g);
+            up--;
+            down++;
+            l.add(t);
+        }
+        return l;
+    }
+}

@@ -1,0 +1,19 @@
+public class Solution {
+    public static int reverse(int x) {
+	        int t=0;
+	        Boolean f=false;
+	    	if(x<0)
+	    	{
+	    		f=true;
+	        	x=0-x;
+	    	}
+	    	while(x>0)
+	        {
+	        	t=t*10+x%10;
+	        	x/=10;
+	        }
+	    	if(f)
+	    		t=0-t;
+	    	return t;
+	    }
+}

@@ -1,0 +1,22 @@
+/*
+ * http://blog.csdn.net/lanyu317/article/details/22693685
+ * 公式是max(min(a[i],a[j])*(j-i))
+ * 思想就是,对于每一对(i,j),如果a[i]<a[j],那么移动j没用,因为ans(i,j-1)肯定<=ans(i,j)
+ * 因为ans(i,j-1)=min(a[i],a[j-1])<=a[i]=min(a[i],a[j])
+ * a[i]>a[j]也同理,谁小移动谁
+ */
+public class Solution {
+    public int maxArea(int[] a) {
+        int l,r,len=a.length,ans=0;
+        l=0;r=len-1;
+        while(l<r)
+        {
+        	ans=Math.max(ans, Math.min(a[l], a[r])*(r-l));
+        	if(a[l]<a[r])
+        		l++;
+        	else
+        		r--;
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,8 @@
+public class Solution {
+    public String strStr(String haystack, String needle) {
+        int t=haystack.indexOf(needle);
+        if(t==-1)
+        	return null;
+    	return haystack.substring(t);
+    }
+}

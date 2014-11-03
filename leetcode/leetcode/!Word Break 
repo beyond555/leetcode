@@ -1,0 +1,37 @@
+import java.util.*;
+/*
+ * dfs,一定要加上Map记录已经访问过的字串,减少重复计算,不减tle
+ * Set遍历
+ */
+public class Solution {
+    public Map<String,Boolean>m=new HashMap<String,Boolean>();
+    public boolean wordBreak(String s, Set<String> dict) {
+    //  System.out.println(s);
+        int len=s.length();
+        if(len==0)
+            return true;
+        Iterator<String> it=dict.iterator();
+        String v,t;
+        boolean f;
+        while(it.hasNext())
+        {
+            v=it.next();
+            if(s.equals(v))
+                return true;
+            if(s.startsWith(v))
+            {
+                t=s.substring(v.length(),len);
+                if(!m.containsKey(t))
+                {
+                    f=wordBreak(t, dict);
+                    m.put(t, f);
+                }
+                f=m.get(t);
+                if(f)
+                    return true;
+            }
+            
+        }
+        return false;
+    }
+}

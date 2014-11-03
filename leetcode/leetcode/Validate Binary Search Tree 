@@ -1,0 +1,30 @@
+/**
+ * YOU CAN ADD UP SOME FUNCTIONS YOURSELF
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean check(TreeNode now,int left,int right)
+    {
+        Boolean l=true,r=true;
+        if(now==null)
+            return true;
+        if(now.val<=left||now.val>=right)
+            return false;
+        if(now.left!=null)
+            l=check(now.left,left,now.val);
+        if(now.right!=null)
+            r=check(now.right,now.val,right);
+        return l&&r;
+    }
+    public boolean isValidBST(TreeNode root) {
+        if(root==null)
+            return true;
+        return check(root,-99999,99999);
+    }
+}

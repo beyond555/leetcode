@@ -1,0 +1,21 @@
+/*
+ * 这道题一点意思都没有
+ * 不过用try catch思想来判断也是蛮牛逼的
+ */
+public class Solution {
+public boolean isNumber(String s) 
+{
+	    try {
+	        s = s.trim();
+	        int n = s.length();
+	        if ( n == 0 || (s.charAt(n-1) != '.' && (s.charAt(n-1) - '0' < 0 || s.charAt(n-1) - '0' > 9 )) ) {
+	            return false;
+	        }
+	        double i = Double.parseDouble(s);
+	        return true;
+	    }
+	    catch (NumberFormatException e) {
+	        return false;
+	    }
+	}
+}

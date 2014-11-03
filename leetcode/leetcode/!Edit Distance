@@ -1,0 +1,41 @@
+/*
+经典的二维dp,注意边界
+i,j从0开始循环不是1
+因为dp[0][j]和dp[i][0]的代价肯定不是0
+*/
+public class Solution {
+    public int minDistance(String word1, String word2) {
+        int al=word1.length(),bl=word2.length();
+        int i,j;
+        int dp[][]=new int[al+1][bl+1];
+        for(i=0;i<=al;i++)
+        {
+        	for(j=0;j<=bl;j++)
+        	{
+        		dp[i][j]=999999;
+        	}
+        }
+        dp[0][0]=0;
+        int replace;
+        for(i=0;i<=al;i++)
+        {
+        	for(j=0;j<=bl;j++)
+        	{
+        		if(i>0)
+        			dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j]);//insert to word1 at i
+        		if(j>0)
+        			dp[i][j]=Math.min(dp[i][j-1]+1,dp[i][j]);//delete from word1 at i
+        		if(i>0&&j>0)
+        		{
+        			replace=dp[i-1][j-1];
+        			if(word1.charAt(i-1)!=word2.charAt(j-1))//index from 1
+        				replace+=1;
+        			dp[i][j]=Math.min(dp[i][j],replace);
+        		}
+        	}
+        }
+        return dp[al][bl];
+    }
+}
+
+

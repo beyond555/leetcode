@@ -1,0 +1,95 @@
+/*位运算，可以除不尽，可以有负数
+上面程序是C++的，每次减小dividend，很好处理了2147483648
+
+下面我用java的，就会超时，不过不想改了，可以每次减小dividend同时保证dividend>=divisor,
+另外b*2可以改成b+b或者位运算这些，java就不方便用long long了就没改
+*/
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        if (dividend == 0 || divisor == 0)
+            return 0;
+
+        int nega = 0;
+        if ((dividend>0&&divisor<0) || (dividend<0&&divisor>0))
+            nega = 1;
+       
+        long long c = dividend;    //先用两个long long来存一下，不然下面abs(-2147483648)会溢出，因为正数int只能到2147483647
+        long long d = divisor;
+        long long a = abs(c);
+        long long b = abs(d);
+
+        if (b > a)
+            return 0;
+
+        long long sum = 0;
+        int count = 0;
+        int final = 0;
+        while (a >= b)
+        {
+            count = 1;                //a >= b保证了最少有一个count
+            sum = b;
+            while (sum + sum <= a){    //!!
+                sum += sum;
+                count += count;
+            }
+            a -= sum;
+            final += count;
+        }
+
+        if (nega)
+            final = 0 - final;
+
+        return final;
+    }
+};
+
+import java.math.BigInteger;
+
+public class Solution {
+    public int get(int A,int B)
+    {
+    	BigInteger a=BigInteger.valueOf(A);
+    	BigInteger b=BigInteger.valueOf(B);
+    	BigInteger temp=b;
+    	BigInteger t=BigInteger.ONE;
+    	BigInteger ans=t;
+    	if(a.compareTo(b)<0)
+    		return 0;
+    	while(temp.compareTo(a)<0)
+    	{
+    		ans=t;
+    		t=t.multiply(BigInteger.valueOf(2));
+    		temp=b.multiply(t);
+    	}
+    	if(temp.compareTo(a)>0)
+    		return ans.intValue();
+    	return t.intValue();
+    }
+	public int divide(int dividend, int divisor) {
+        int ans=0,t;
+        boolean f=false;
+        if(dividend<0&&divisor<0)
+        {
+        	dividend=0-dividend;
+        	divisor=0-divisor;
+        }
+        if(!(dividend>=0&&divisor>0))
+    	{
+        	f=true;
+        	dividend=Math.abs(dividend);
+        	divisor=Math.abs(divisor);
+    	}
+		while(dividend>0)
+		{
+			t=get(dividend,divisor);
+			if(t==0)
+				break;
+			dividend-=t*divisor;
+			ans+=t;
+		}
+		if(f)
+			return -ans;
+		return ans;
+    }
+}

@@ -1,0 +1,108 @@
+/*
+ * 自己tle的在下面,参照了的在上面.
+ * 1.用linkedHashMap能够记录hash访问的次序,iterator最先遍历的也就是最老的记录,符合LRU要求.
+ * 2.linkedhashmap.put都会将最新的记录放在最后面,来合理的记录访问次序,对于新的set或者get,都要重新put一下
+ * 3.自己tle的方法是用两个list,一个list保存key,index,另一个保存value,index(因为之前key,value同时要前后移动,需要index),导致tle
+ */
+import java.util.*;
+public class LRUCache 
+{
+    private int size;
+    Map <Integer, Integer> map;
+    public LRUCache(int capacity) {
+        size= capacity;
+        map = new LinkedHashMap<Integer, Integer>();
+    }
+    //get的时候,这个点也会被当成最近访问的,要重新set一遍
+      public int get(int key) {
+            if (map.containsKey(key)) {
+                Integer val = map.get(key);
+                set(key,val);
+                return val;
+            } else {
+                return -1;
+            }
+        }
+      
+     public void set(int key, int value) {
+        if (map.containsKey(key)||map.size() < size) 
+        {
+            map.remove(key);
+            map.put(key, value);
+            return;
+        }
+        //记录最先访问的,也就是最老的要被淘汰的
+        Iterator<Map.Entry<Integer, Integer>> iterator = map.entrySet().iterator();
+        if (iterator.hasNext()) {
+            Integer t = iterator.next().getKey();
+            map.remove(t);
+        }
+        map.put(key, value);
+    } 
+     public void debug()
+     {
+         System.out.println("debug");
+         Iterator<Map.Entry<Integer, Integer>> iterator = map.entrySet().iterator();
+         for (Iterator it =  map.keySet().iterator();it.hasNext();)
+         {
+            Object key = it.next();
+            System.out.println( key+" "+ map.get(key));
+           }
+     }
+}
+
+
+
+
+import java.util.*;
+public class LRUCache {
+	List<Integer>Key;
+	Map<Integer,Integer>m;
+	List<Integer>v;
+	int size;
+    public LRUCache(int capacity) {
+    	Key=new Stack<Integer>();
+    	size=capacity;
+        v=new ArrayList<Integer>();
+        
+    }
+    
+    public int get(int key) {
+    	int id = Key.indexOf(key);
+   // 	System.out.println("get "+key+" "+id);
+    	if(id==-1)
+    		return id;
+    	return v.get(id);
+    	
+    }
+    
+    public void set(int key, int value) {
+    	int id = Key.indexOf(key);
+    	if(id!=-1)
+    	{
+    		Key.remove(id);
+    		v.remove(id);
+    	}
+    	if(Key.size()>=size)
+    	{
+    		Key.remove(size-1);
+    		v.remove(size-1);
+    	}
+    	Key.add(0, key);
+    	v.add(0,value);
+    }
+    
+    public void debug()
+    {
+    	System.out.println("key ");
+    	for (Integer x : Key) { 
+            System.out.print(x+" "); 
+    	}
+    	System.out.println("\nvalue ");
+    	for(Integer x: v)
+    	{
+    		System.out.print(x+" ");
+    	}
+    	System.out.println();
+    }
+}

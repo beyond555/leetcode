@@ -1,0 +1,40 @@
+/*
+1.use global variable, it is ok not to use
+2.the parameter in search should be List<Integer>now not ArrayList,or error: method search in class Solution cannot be applied to given types;
+3.when dfs, the parameter of List<Integer>now must be new ArrayList<Integer>(now), to make a copy of 'now',if use now directly,both left and right use the same one.
+*/
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    List<List<Integer>> ans;
+    public void search(TreeNode root,int sum,List<Integer>now,int temp)
+    {
+        int all=temp+root.val;
+        now.add(root.val);
+        if(root.left==null&&root.right==null)
+        {
+        	if(all==sum)
+        		ans.add(now);
+            return ;
+        }
+        if(root.left!=null)
+            search(root.left,sum,new ArrayList<Integer>(now),all);
+        if(root.right!=null)
+            search(root.right,sum,new ArrayList<Integer>(now),all);
+    }
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        ans=new ArrayList<List<Integer>>();
+        if(root==null)
+            return ans;
+        List<Integer>now=new ArrayList<Integer>();
+        search(root,sum,now,0);
+        return ans;
+    }
+}

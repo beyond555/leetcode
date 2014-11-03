@@ -1,0 +1,28 @@
+import java.util.*;
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null)
+        	return head;
+        List<Integer>l=new ArrayList<Integer>();
+        int i,len;
+        ListNode temp=head;
+        while(temp!=null)
+        {
+        	l.add(temp.val);
+        	temp=temp.next;
+        }
+        len=l.size();
+        int []a=new int[len];
+        for(i=0;i<len;i++)
+        	a[i]=l.get(i);
+        Arrays.sort(a);
+        i=0;
+        temp=head;
+        while(temp!=null)
+        {
+        	temp.val=a[i++];
+        	temp=temp.next;
+        }
+        return head;
+    }
+}

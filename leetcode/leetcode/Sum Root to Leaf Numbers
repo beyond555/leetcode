@@ -1,0 +1,33 @@
+/*
+注意root.val是先算到sum里面去的，
+再判断是否是叶子节点
+*/
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int get(TreeNode root,int sum)
+    {
+		int left=0,right=0,now=0;
+        if(root==null)
+        	return sum;
+        now=root.val;
+        sum+=now;
+        if(root.left==null&&root.right==null)
+        	return sum;
+        if(root.left!=null)
+        	left=get(root.left,sum*10);
+        if(root.right!=null)
+        	right=get(root.right,sum*10);
+        return left+right;
+    }
+    public int sumNumbers(TreeNode root) {
+        return get(root,0);
+    }
+}

@@ -1,0 +1,68 @@
+/*
+ * java实现字典树
+ * 1.node()构造函数不会重复递归的生成node节点
+ * 2.虽然每次访问的时候已经有了next,但是对于特定的next[i]还是要重新new一下,让node[i]指向一个特定的node才行
+ * 3.node属性用cnt代表这个节点被多少个字符串访问过,那么只要next[i].cnt==s.length,就代表他是公共字串
+ */
+class node
+{
+    node next[];
+    int cnt;
+    node()
+    {
+        next=new node[26];
+        cnt=0;
+    }
+    
+}
+public class Solution {
+    public String longestCommonPrefix(String[] s) {
+        if(s.length==0)
+            return "";
+        node root=new node();
+        root.cnt=s.length;
+        int i,len=s.length,j = 0,off,cnt;
+        String t;
+        node now;
+        for(i=0;i<len;i++)
+        {
+            now=root;
+            t=s[i];
+            for(j=0;j<t.length();j++)
+            {
+                off=t.charAt(j)-'a';
+                if(now.next[off]==null)
+                {
+                    now.next[off]=new node();                   
+                }
+                now.next[off].cnt++;
+                now=now.next[off];
+                
+            }
+        }
+        now=root;
+        StringBuffer sb=new StringBuffer("");
+        off=0;
+        while(now!=null)
+        {
+            cnt=0;
+            for(i=0;i<26;i++)
+            {
+                if(now.next[i]!=null&&now.next[i].cnt==s.length)
+                {
+                    cnt++;
+                    j=i;
+                }
+            }
+            if(cnt==1)
+            {
+                sb.append(s[0].charAt(off++));
+                now=now.next[j];
+            }
+            else
+                break;
+        }
+        
+        return sb.toString();
+    }
+}

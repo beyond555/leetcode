@@ -1,0 +1,86 @@
+/*
+ * 要求空间用常数,容易想到空间O(m+n)的,第一次扫描保存n行和m列是否存在0,记录下来,第二次扫描则看ij对应的行列是否是0即可
+ * 常数空间就是把第一行第一列拿出当O(m+n)用,那么用之前先扫描第一行,第一列看是否出现了0,
+ * 然后对于剩下的矩阵(从1开始):
+ * 如果ij为0,设置对应行,列为0,即a[i][0]=a[0][j]=0.那么再还原这个子矩阵(从1开始),如果a[i][0]或者a[0][j]=0,那么a[i][j]=0
+ * 最后再还原第一行第一列,前面统计过的,如果第一行原本有0,那么第一行全部还原成0.列也同理
+ */
+public class Solution {
+    public void setZeroes(int[][] a) {
+        int i,j,n,m;
+        n=a.length;
+        if(n==0)
+        	return ;
+        m=a[0].length;
+        if(m==0)
+        	return ;
+        boolean fr,fc;
+        fr=fc=false;
+        for(i=0;i<n;i++)
+        {
+        	if(a[i][0]==0)
+        	{
+        		fc=true;
+        		break;
+        	}
+        }
+        for(i=0;i<m;i++)
+        {
+        	if(a[0][i]==0)
+        	{
+        		fr=true;
+        		break;
+        	}
+        }
+  //      debug(a);
+        for(i=1;i<n;i++)
+        {
+        	for(j=1;j<m;j++)
+        	{
+        		if(a[i][j]==0)
+        		{
+        			a[i][0]=0;
+        			a[0][j]=0;
+        		}
+        	}
+        }
+        for(i=1;i<n;i++)
+        {
+        	for(j=1;j<m;j++)
+        	{
+        		if(a[i][0]==0||a[0][j]==0)
+        		{
+        			a[i][j]=0;
+        		}
+        	}
+        }
+        if(fr)
+        {
+        	for(i=0;i<m;i++)
+            {
+            	a[0][i]=0;
+            }
+        }
+        if(fc)
+        {
+        	for(i=0;i<n;i++)
+            {
+            	a[i][0]=0;
+            }
+        }
+  //      debug(a);
+    }
+    public void debug(int [][]a)
+    {
+    	int i,j,n,m;
+    	n=a.length;
+    	m=a[0].length;
+    	for(i=0;i<n;i++)
+    	{
+
+    		for(j=0;j<m;j++)
+    			System.out.print(a[i][j]+" ");
+    		System.out.println();
+    	}
+    }
+}

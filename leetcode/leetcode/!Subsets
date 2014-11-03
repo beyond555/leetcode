@@ -1,0 +1,47 @@
+/*
+each time add the small one to each of the previous subsets
+hard to imitate
+*/
+public class Solution {
+    public List<List<Integer>> subsets(int[] S) {
+        List<List<Integer>>ans=new ArrayList<List<Integer>>();
+    	int i,j,id,k,len=S.length,temp;
+    	if(len==0)
+    		return null;
+    	Arrays.sort(S);
+    	List<Integer> t=new ArrayList<Integer>();
+		ans.add(t);
+    	for(i=0;i<len;i++)
+    	{
+    		temp=ans.size();
+    		for(j=0;j<temp;j++)
+    		{
+    			id=ans.get(j).size();
+    			if(id==0)
+    			{
+    				List<Integer> now=new ArrayList<Integer>();
+    				now.add(S[i]);
+    				ans.add(now);
+    			}
+    			else
+    			{
+	    			List<Integer> now=new ArrayList<Integer>();
+					for(k=0;k<id;k++)
+					{
+		    			now.add(ans.get(j).get(k));
+					}
+					
+					now.add(S[i]);
+					ans.add(now);
+    			}
+    		}
+    	}
+/*    	for(i=0;i<ans.size();i++)
+		{
+    		for(j=0;j<ans.get(i).size();j++)
+    			System.out.print(ans.get(i).get(j)+" ");
+    		System.out.println();
+		}
+*/    	return ans;
+    }
+}

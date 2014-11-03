@@ -1,0 +1,36 @@
+//just imitate the process ,a1,a2,a3 can be seen as the 1,2,3 value in the example
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if(head==null||head.next==null)
+            return head;
+        ListNode root,pre=new ListNode(-1),a1,a2,a3;
+        root=pre;
+        pre.next=head;
+        while(pre!=null)
+        {
+            a1=pre.next;
+            if(a1==null)
+                break;
+            a2=a1.next;
+            if(a2==null)
+                break;
+            a3=a2.next;//may be null
+            pre.next=a2;
+            a1.next=a3;
+            a2.next=a1;
+            pre=a1;
+        }
+        return root.next;
+    }
+}

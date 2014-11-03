@@ -1,0 +1,48 @@
+/*
+k may be larger than len
+add a new head to be pre node
+*/
+import java.util.*;
+public class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        List<ListNode>l=new ArrayList<ListNode>();
+        if(head==null||k==1)
+        	return head;
+        int i,len;
+        int id;
+        ListNode t=head,after,pre,newhead=new ListNode(-1);
+        pre=after=null;
+        while(t!=null)
+        {
+        	l.add(t);
+        	t=t.next;
+        }
+        len=l.size();
+        newhead.next=head;
+        pre=newhead;
+        id=k-1;
+        if(k>len)
+        	return head;
+        while(true)
+        {
+        	pre.next=l.get(id);
+        	
+        	for(i=id;i>id-k+1;i--)
+        	{
+        		l.get(i).next=l.get(i-1);
+        	}
+        	if(id+1<len)
+        		after=l.get(id+1);
+        	else
+        		after=null;
+        	l.get(id-k+1).next=after;
+        	pre=l.get(id-k+1);
+        	id+=k;
+        	if(id>=len)
+        		break;
+        }
+        
+
+        return newhead.next;
+    }
+}

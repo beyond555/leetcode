@@ -1,0 +1,40 @@
+/*
+ * 注意String和char[]互相转换的方法
+ */
+import java.util.*;
+public class Solution {
+    public List<String> anagrams(String[] strs) {
+        int i,len=strs.length,v;
+        String t;
+        List<String>l=new ArrayList<String>();
+        Map<String,Integer>m=new HashMap<String,Integer>();
+        char c[];
+        for(i=0;i<len;i++)
+        {
+        	c=strs[i].toCharArray();
+        	Arrays.sort(c);
+        	t=String.valueOf(c);
+        	if(!m.containsKey(t))
+        	{
+        		m.put(t, 0);
+        	}
+        	else
+        	{
+        		v=m.get(t);
+        		m.put(t, v+1);
+        	}
+        }
+        for(i=0;i<len;i++)
+        {
+        	c=strs[i].toCharArray();
+        	Arrays.sort(c);
+        	t=String.valueOf(c);
+        	if(m.get(t)>0)
+        	{
+        		l.add(strs[i]);
+        //		System.out.println(strs[i]);
+        	}
+        }
+        return l;
+    }
+}

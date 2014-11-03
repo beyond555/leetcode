@@ -1,0 +1,34 @@
+/*
+1.use memorize search，do not repeat the process calculated before
+2.take care when s.length()==0
+*/
+public class Solution {
+	public int dp[];
+	public int check(String s,int off)
+	{
+		int t,ans=0,len=s.length();
+		
+        if(len==0)
+        	return 1;
+        if(s.charAt(0)=='0')
+        	return 0;
+        if(len==1)
+            return 1;
+        if(dp[off]!=-1)
+        	return dp[off];
+        t=Integer.valueOf(s.substring(0,2));
+        ans+=check(s.substring(1,len),off+1);
+        if(t<=26&&t>=10)
+        	ans+=check(s.substring(2,len),off+2);
+        dp[off]=ans;
+        return ans;
+	}
+    public int numDecodings(String s) {
+    	dp=new int[s.length()];
+    	for(int i=0;i<s.length();i++)
+    		dp[i]=-1;
+    	if(s.length()==0)
+    		return 0;
+        return check(s,0);
+    }
+}

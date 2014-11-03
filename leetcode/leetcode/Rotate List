@@ -1,0 +1,34 @@
+/*
+ * check the boundary len-1,len-1-n
+ * 1.length may be 0
+ * 2.n may be larger than len,so n=n%len
+ */
+import java.util.*;
+
+public class Solution {
+    public ListNode rotateRight(ListNode head, int n) {
+    	if(n==0)
+    		return head;
+        int len;
+        List<ListNode>l=new ArrayList<ListNode>();
+        ListNode t=head;
+        while(t!=null)
+        {
+        	l.add(t);
+        	t=t.next;
+        }
+        len=l.size();
+        if(len==0)
+        	return head;
+        n%=len;
+        if(n==0)
+        	return head;
+        ListNode oldTail,newTail,newHead;
+        oldTail=l.get(len-1);
+        oldTail.next=head;
+        newTail=l.get(len-1-n);
+        newHead=l.get(len-n);
+        newTail.next=null;
+        return newHead;
+    }
+}

@@ -1,0 +1,69 @@
+/*
+ * 1.那个a*b*c是代表任意个a,任意个b,一个c,*号和前面符号是连着的
+ * 2.各种边界错误,越界,len=0或者len==length,注意返回条件的判断
+ * 3.p串里面下一个字符是*的时候,只要s串和p串字符相等,或者p串是.,那么可以一直往下匹配直到不相等
+ * 此时不相等还可以再匹配一次,容易忘掉.(相当于把相等的字符全部匹配完,再和b+2匹配)
+ * 
+ */
+public class Solution {
+	String s;
+	String p;
+	int suit[][];
+	public boolean judge(int a,int b)
+	{
+		int i,len1=s.length(),len2=p.length(),c;
+	//	System.out.println(s.substring(a)+"\t"+p.substring(b));
+		if(b==len2)
+		{
+			return a==len1;
+		}
+		if(a>len1)
+			return false;
+		if(suit[a][b]==1)
+		{
+			return true;
+		}
+		if(suit[a][b]==-1)
+		{
+			return false;
+		}
+		suit[a][b]=1;
+		if(b+1<len2&&p.charAt(b+1)=='*')
+		{
+			c=a;
+			while(c<len1&&(s.charAt(c)==p.charAt(b)||p.charAt(b)=='.'))
+			{
+				if(judge(c,b+2))
+				{
+					return true;
+				}
+				c++;
+			}
+			if(judge(c,b+2))
+				return true;
+		}
+		else if(p.charAt(b)=='.')
+		{
+			if( judge(a+1,b+1))
+			{
+				return true;
+			}
+		}
+		else 
+		{
+			if(a<len1&&p.charAt(b)==s.charAt(a)&&judge(a+1,b+1))
+			{
+				return true;
+			}
+		}
+		suit[a][b]=-1;
+		return false;
+	}
+    public boolean isMatch(String s, String p) {        
+    	this.s=s;
+    	this.p=p;
+    	int len1=s.length(),len2=p.length();
+    	suit=new int[len1+1][len2+1];
+    	return judge(0,0);
+    }
+}

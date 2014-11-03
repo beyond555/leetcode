@@ -1,0 +1,102 @@
+/*
+1.根据偏移量修改字符,一定要cast成char:c=(char) ('a'+j);
+2.第二段代码是我原来的bfs,每次从Set里面找可行的,但是Set量大会导致tle,改进方法是每次从start去枚举可行的next判断next是否访问以及在Set中，巧妙
+*/
+import java.util.*;
+
+public class Solution {
+	public boolean judge(String a,String b)
+	{
+		int i,cnt=0,len=a.length();
+		for(i=0;i<len;i++)
+		{
+			if(a.charAt(i)!=b.charAt(i))
+				cnt++;
+			if(cnt>1)
+				return false;
+		}
+		return true;
+	}
+	public int bfs(String start, String end, Set<String> dict)
+	{
+		Queue<String>q=new LinkedList<String>();
+		Map<String,Integer>step=new HashMap<String,Integer>();
+		String next="";
+		int Step=1;
+		int i,j,len=start.length();
+		q.add(start);
+		step.put(start, Step);
+		char c;
+		while(q.size()>0)
+		{
+			start=q.poll();
+//			System.out.println(start+" out");
+			Step=step.get(start);
+			for(i=0;i<len;i++)
+			{
+				for(j=0;j<26;j++)
+				{
+					c=(char) ('a'+j);
+					next=start.substring(0, i)+c+start.substring(i+1);
+//					System.out.println(" n "+next);
+					if(!step.containsKey(next)&&dict.contains(next))
+					{
+//						System.out.println(next+" in");
+						step.put(next, Step+1);
+						q.add(next);
+						if(next.equals(end))
+							return Step+1;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+    public int ladderLength(String start, String end, Set<String> dict) {
+        if(start.equals(end))
+        	return 0;
+        return bfs(start,end,dict);
+    }
+}
+/*
+public boolean judge(String a,String b)
+	{
+		int i,cnt=0,len=a.length();
+		for(i=0;i<len;i++)
+		{
+			if(a.charAt(i)!=b.charAt(i))
+				cnt++;
+			if(cnt>1)
+				return false;
+		}
+		return true;
+	}
+	public int bfs(String start, String end, Set<String> dict)
+	{
+		Queue<String>q=new LinkedList<String>();
+		Map<String,Integer>step=new HashMap<String,Integer>();
+		String next="";
+		int Step=0;
+		q.add(start);
+		step.put(start, Step);
+		Iterator<String>it;
+		while(q.size()>0)
+		{
+			start=q.poll();
+			Step=step.get(start);
+			it=dict.iterator();
+			while(it.hasNext())
+			{
+				next=it.next();
+				if(!step.containsKey(next)&&judge(start,next))
+				{
+					step.put(next, Step+1);
+					q.add(next);
+					if(next.equals(end))
+						return Step+1;
+				}
+			}
+		}
+		return 0;
+	}
+*/

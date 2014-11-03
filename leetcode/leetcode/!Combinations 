@@ -1,0 +1,34 @@
+/*
+the small element must be put before large one
+use dfs to solve
+*/
+public class Solution {
+    public List<List<Integer>> get(int begin,int n,int depth)
+    {
+        if(begin+depth>n+1)
+            return null;
+        List<List<Integer>> next=new ArrayList<List<Integer>>();
+        if(depth==1)
+        {
+            List<Integer> now=new ArrayList<Integer>();
+            now.add(begin);
+            next.add(now);
+            return next;
+        }
+        int i;
+        for(i=1;begin+i+depth-1<=n+1;i++)
+        	next.addAll(get(begin+i,n,depth-1));
+        for(i=0;i<next.size();i++)
+        {
+        	next.get(i).add(0,begin);//!!!
+        }
+        return next;
+    }
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> next=new ArrayList<List<Integer>>();
+    	int i,j;
+    	for(i=1;i+k<=n+1;i++)
+        	next.addAll(get(i,n,k));
+        return next;
+    }
+}

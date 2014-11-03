@@ -1,0 +1,32 @@
+/*
+ * 从左往右扫一次,确保左边邻居的正确性
+ * 再从右往左扫,不会影响左边邻居的情况,同时保证右边邻居的正确性
+ */
+public class Solution {
+    public int candy(int[] a) {
+        int i,len=a.length,sum=0;
+        if(len==0||len==1)
+        	return len;
+        int res[]=new int[len];        
+        for(i=1;i<len;i++)
+        {
+        	if(a[i]>a[i-1])
+        		res[i]=res[i-1]+1;
+        }
+        for(i=len-2;i>=0;i--)
+        {
+        	if(a[i]>a[i+1])
+        	{
+        		if(res[i]<res[i+1]+1)
+        			res[i]=res[i+1]+1;
+        	}
+        }
+        for(i=0;i<len;i++)
+        {
+    //    	System.out.println(res[i]);
+        	sum+=res[i];
+        }
+        sum+=len;
+        return sum;
+    }
+}

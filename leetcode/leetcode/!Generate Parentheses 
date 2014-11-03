@@ -1,0 +1,43 @@
+/*
+1.用迭代的话也是模拟卡特兰过程
+而不是根据n-1就能得到的　如4时的(())(())是2和2组合的
+2.这里没用迭代，而是模拟正反括号，根据r>=1&&l<r确保了数据的合理性（之前用法合理，且正括号用的多，才能加负括号）
+*/
+public class Solution {
+	public List<String> get(Stack<String>s,int l,int r)
+	{
+		Stack<String>ans=new Stack<String>();
+		Stack<String>t1=new Stack<String>();
+		Stack<String>t2=new Stack<String>();
+		String t;
+		int len=s.size(),i;
+		if(l==0&&r==0)
+		{
+			return s;
+		}
+		if(l>=1)
+		{
+			for(i=0;i<len;i++)
+			{
+				t=s.get(i)+"(";
+				t1.add(t);
+			}
+			ans.addAll(get(t1,l-1,r));
+		}
+		if(r>=1&&l<r)
+		{
+			for(i=0;i<len;i++)
+			{
+				t=s.get(i)+")";
+				t2.add(t);
+			}
+			ans.addAll(get(t2,l,r-1));
+		}
+		return ans;
+	}
+    public List<String> generateParenthesis(int n) {
+        Stack<String>s=new Stack<String>();
+        s.add("");
+        return get(s,n,n);
+    }
+}

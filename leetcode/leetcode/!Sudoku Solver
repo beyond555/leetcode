@@ -1,0 +1,209 @@
+/*
+ * quite hard to implement the code...
+ * but the idea is easy.
+ * Is it dancing link?I use the template of dancing link in c++ and it's so long...
+ * The idea is:
+ * 1.change the value from [1,9] to [0,8]
+ * 2.init(),keep the record of the number of the unlabeled element of each row
+ * 3.build() the matrix,the (i,j) element will affect the same row,same col,and same submatrix(3*3)
+ * use the not[][][] to keep track of the candidate of the each element
+ * if not[i][j][v]=true; it means the element at(i,j) can not choose the value of v
+ * 4.dfs(),each time find the element with the least number of candidates,then update() and keep dfs()
+ * if false,then resume it and test the next candidate()
+ * 5.finally, resume the range of[0,8] to [1,9]
+ */
+public class Solution {
+	public final int len=9;
+	public boolean row[][]=new boolean[len][len];
+	public boolean col[][]=new boolean[len][len];
+	public boolean sub[][]=new boolean[len][len];
+	public int rowcnt[]=new int[len];
+	public boolean not[][][]=new boolean[len][len][len];
+	public char a[][];
+	class node
+	{
+		int row;
+		int col;
+	}
+	public void init()
+	{
+		int i;
+		for(i=0;i<len;i++)
+		{
+			rowcnt[i]=len;
+		}
+	}
+	/*
+	 * the row i,col j,sub has the value v,set true
+	 * the related element in the same row,col,sub will not have the value v
+	 */
+	public void update(int i,int j,int v)
+	{
+		int k,m,id;
+		row[i][v]=true;
+		for(k=0;k<len;k++)//the row will not have v
+		{
+			not[i][k][v]=true;
+		}
+		rowcnt[i]--;
+		col[j][v]=true;
+		for(k=0;k<len;k++)//the col will not have v
+		{
+			not[k][j][v]=true;
+		}
+		sub[getsub(i,j)][v]=true;
+		id=getsub(i,j);
+		for(k=id/3*3;k<id/3*3+3;k++)
+		{
+			for(m=(id%3)*3;m<(id%3)*3+3;m++)
+			{
+				not[k][m][v]=true;
+			}
+		}
+		not[i][j][v]=false;
+	}
+	public int getsub(int i,int j)
+	{
+		return i/3*3+j/3;
+	}
+	public void resume(int i,int j,int v)
+	{
+		int k,m,id;
+		row[i][v]=false;
+		for(k=0;k<len;k++)
+			not[i][k][v]=false;
+		rowcnt[i]++;
+		col[j][v]=false;
+		for(k=0;k<len;k++)
+			not[k][j][v]=false;
+		sub[getsub(i,j)][v]=false;
+		id=getsub(i,j);
+		for(k=id/3*3;k<id/3*3+3;k++)
+		{
+			for(m=(id%3)*3;m<(id%3)*3+3;m++)
+			{
+				not[k][m][v]=false;
+			}
+		}
+	}
+	public void build()
+	{
+		int i,j,t;
+		for(i=0;i<len;i++)
+		{
+			for(j=0;j<len;j++)
+			{
+				if(a[i][j]=='.')
+					continue;
+				else
+				{
+					a[i][j]=(char) (a[i][j]-1);//
+					t=(int)(a[i][j]-'0');
+					update(i,j,t);
+				}
+			}
+		}
+	}
+	public void debug()
+	{
+		int i,j;
+		for(i=0;i<len;i++)
+		{
+			for(j=0;j<len;j++)
+			{
+				System.out.print(a[i][j]);
+			}
+			System.out.println();
+		}
+	}
+	/*
+	 * find the node which has the least candidates to choose
+	 */
+	public node findnode()
+	{
+		int i,j,k,sum,mi=999;
+		node t=new node();
+		t.row=t.col=-1;//if we can't find the next node,means it's wrong way
+		for(i=0;i<len;i++)
+		{
+			for(j=0;j<len;j++)
+			{
+				if(a[i][j]=='.')
+				{
+					sum=0;
+					for(k=0;k<len;k++)
+					{
+						if(!not[i][j][k])
+						{
+							sum++;
+						}
+					}
+		//			System.out.println("find "+i+" "+j+" "+sum);
+					if(sum>0&&sum<mi)
+					{
+						mi=sum;
+						t.row=i;t.col=j;
+					}
+				}
+			}
+		}
+		return t;
+	}
+	public boolean suit()
+	{
+		int i;
+		for(i=0;i<len;i++)
+			if(rowcnt[i]>0)
+				return false;
+		return true;
+	}
+	public boolean suit(int i,int j,int v)
+	{
+		if(row[i][v]||col[j][v]||sub[getsub(i,j)][v])
+			return false;
+		return true;
+	}
+	public boolean dfs()
+	{
+		int i,j,v;
+		if(suit())
+			return true;
+		node t=findnode();
+		i=t.row;
+		j=t.col;
+		if(i==-1&&j==-1)
+			return false;
+		for(v=0;v<len;v++)
+		{
+			if(suit(i,j,v))
+			{
+				a[i][j]=(char) ('0'+v);
+//				System.out.println("update "+id +" "+i+" "+v);
+				update(i,j,v);
+				if(dfs())
+					return true;
+				a[i][j]='.';
+				resume(i,j,v);							
+			}
+		}
+		return false;
+	}
+    public void solveSudoku(char[][] board) {
+        this.a=board;
+        init();
+        build();
+//        debug();
+        dfs();
+        int i,j;
+        
+        for(i=0;i<len;i++)
+        {
+        	for(j=0;j<len;j++)
+        	{
+        		board[i][j]=(char) (a[i][j]+1);
+        //		System.out.print(board[i][j]);
+        	}
+      //  	System.out.println();
+        }
+    }
+}

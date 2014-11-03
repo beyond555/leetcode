@@ -1,0 +1,59 @@
+public class Solution {
+	public int a[][];
+	public boolean suit(int x,int y,int n)
+	{
+		if(x>=0&&x<n&&y>=0&&y<n&&a[x][y]==0)
+			return true;
+		return false;
+	}
+    public int[][] generateMatrix(int n) {
+        a=new int[n][n];
+        int x,y,cnt=n*n,id=1;
+        x=0;y=0;
+        while(id<=cnt)
+        {
+        //	System.out.println(cnt+" "+x+" "+y);
+        	while(suit(x,y,n))
+        	{
+        		a[x][y]=id++;
+        		y++;
+        	}
+        	
+        	y--;
+        	x++;
+        	while(suit(x,y,n))
+        	{
+        		a[x][y]=id++;
+        		x++;
+        	}
+        	x--;
+        	y--;
+        	while(suit(x,y,n))
+        	{
+        		a[x][y]=id++;
+        		y--;
+        	}
+        	y++;
+        	x--;
+        	while(suit(x,y,n))
+        	{
+        		a[x][y]=id++;
+        		x--;
+        	}
+        	x++;
+        	y++;
+        }
+     //   debug(n);
+        return a;
+    }
+    public void debug(int n)
+    {
+    	int i,j;
+    	for(i=0;i<n;i++)
+    	{
+    		for(j=0;j<n;j++)
+    			System.out.print(a[i][j]+" ");
+    		System.out.println();
+    	}
+    }
+}

@@ -1,0 +1,29 @@
+太无聊了不想做
+class Solution {
+public:
+    string convert(string s, int nRows) {
+        if(s.length() == 0 || 
+            s.length()/nRows < 1 ||
+            nRows == 1) 
+        {
+            return s;
+        }
+        int distance = 2*(nRows-1);
+        string result;
+        int offset = 0;
+        for (int row = 0; row < nRows; row++)
+        {
+            for (int index = row; index < s.length(); index += distance)
+            {
+                result+=s[index];
+                if (offset != 0 && index + distance - offset < s.length())
+                {
+                    result+=s[index + distance - offset];
+                }
+            }
+            offset += 2;
+            offset = offset % distance;
+        }
+        return result;
+    }
+};

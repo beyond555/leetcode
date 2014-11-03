@@ -1,0 +1,72 @@
+//直接在!Next Permutation上加
+import java.util.*;
+public class Solution {
+    public int findId(int []a)
+    {
+        int i,j,len=a.length;
+        for(i=len-1;i>=0;i--)
+        {
+            for(j=i+1;j<len;j++)
+            {
+              if(a[i]<a[j])
+                return i;
+            }
+        }
+        return -1;
+    }
+    public List<Integer> nextPermutation(int[] num) {
+        int i,len=num.length,id=findId(num),min=Integer.MAX_VALUE,exchangeId = 0;
+        List<Integer>l=new ArrayList<Integer>();
+        if(id==-1)
+        {
+        	Arrays.sort(num);
+        	return l;
+        }
+        for(i=id+1;i<len;i++)
+        {
+            if(num[id]<num[i]&&num[i]<min)
+            {
+                min=num[i];
+                exchangeId=i;
+            }
+        }
+        num[exchangeId]=num[id];
+        num[id]=min;
+        int temp[]=new int[len-id-1];
+        for(i=id+1;i<len;i++)
+            temp[i-id-1]=num[i];
+        Arrays.sort(temp);
+        for(i=id+1;i<len;i++)
+            num[i]=temp[i-id-1];
+        for(i=0;i<len;i++)
+        {
+    //    	System.out.print(num[i]+" ");
+        	l.add(num[i]);
+        }
+   //     System.out.println();
+        return l;
+    }
+    public List<List<Integer>> permute(int[] num) {
+        Arrays.sort(num);
+        List<List<Integer>>ans=new ArrayList<List<Integer>>();
+        int i,len=num.length;
+        if(len==0)
+        	return ans;
+        List<Integer>l=new ArrayList<Integer>();
+        for(i=0;i<len;i++)
+        {
+     //   	System.out.print(num[i]+" ");
+        	l.add(num[i]);
+        }
+        ans.add(l);
+        while(true)
+        {
+        	l=nextPermutation(num);
+        	if(l.size()>0)
+        		ans.add(l);
+        	else
+        		break;
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,27 @@
+/*
+最后一条链一定要断掉，设置null,要不然出现{1,2},1的时候
+list里面删掉了最后一个点,但是next关系其实没变
+*/
+import java.util.*;
+public class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        List<ListNode>l=new ArrayList<ListNode>();
+        while(head!=null)
+        {
+            l.add(head);
+            head=head.next;
+        }
+        int i,len=l.size();
+        l.remove(len-n);
+        for(i=0;i<l.size()-1;i++)
+        {
+            l.get(i).next=l.get(i+1);
+        }
+        if(l.size()>0)
+        {
+            l.get(l.size()-1).next=null;
+            return l.get(0);
+        }
+        return null;
+    }
+}
